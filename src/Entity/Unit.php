@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,14 +28,14 @@ class Unit
     private $level;
 
     /**
-     * @ORM\Column(name="pouvoir",type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="power",type="decimal", precision=10, scale=2)
      */
-    private $pouvoir;
+    private $power;
 
     /**
-     * @ORM\Column(name="attaque",type="integer")
+     * @ORM\Column(name="attack",type="integer")
      */
-    private $attaque;
+    private $attack;
 
     /**
      * @ORM\Column(name="defense",type="integer")
@@ -42,20 +43,31 @@ class Unit
     private $defense;
 
     /**
-     * @ORM\Column(name="sante",type="integer")
+     * @ORM\Column(name="health",type="integer")
      */
-    private $sante;
+    private $health;
 
     /**
-     * @ORM\Column(name="vitesse",type="integer")
+     * @ORM\Column(name="speed",type="integer")
      */
-    private $vitesse;
+    private $speed;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\UnitType", cascade={"persist"})
      * @ORM\JoinColumn(name="unit_type", referencedColumnName="id")
      */
     private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Army", mappedBy="unit", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $armies;
+
+
+    public function __construct()
+    {
+        $this->armies = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -105,30 +117,30 @@ class Unit
     /**
      *
      */
-    public function getPouvoir()
+    public function getPower()
     {
-        return $this->pouvoir;
+        return $this->power;
     }
 
     /**
      */
-    public function setPouvoir( $pouvoir)
+    public function setPower( $power)
     {
-        $this->pouvoir = $pouvoir;
+        $this->power = $power;
     }
 
     /**
      */
-    public function getAttaque()
+    public function getAttack()
     {
-        return $this->attaque;
+        return $this->attack;
     }
 
     /**
      */
-    public function setAttaque( $attaque)
+    public function setAttack( $attack)
     {
-        $this->attaque = $attaque;
+        $this->attack = $attack;
     }
 
     /**
@@ -163,35 +175,68 @@ class Unit
     /**
      * @return integer
      */
-    public function getSante()
+    public function getHealth()
     {
-        return $this->sante;
+        return $this->health;
     }
 
     /**
-     * @param integer $sante
+     * @param integer $health
      */
-    public function setSante($sante)
+    public function setHealth($health)
     {
-        $this->sante = $sante;
+        $this->health = $health;
     }
 
     /**
      * @return integer
      */
-    public function getVitesse()
+    public function getSpeed()
     {
-        return $this->vitesse;
+        return $this->speed;
     }
 
     /**
-     * @param integer $vitesse
+     * @param integer $speed
      */
-    public function setVitesse($vitesse)
+    public function setSpeed($speed)
     {
-        $this->vitesse = $vitesse;
+        $this->speed = $speed;
     }
 
+    public function getArmies()
+    {
+        return $this->armies->toArray();
+    }
 
+    public function addJob(Army $army)
+    {
+        if (!$this->armies->contains($army)) {
+            $this->armies->add($army);
+            $army->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Army $army)
+    {
+        if ($this->armies->contains($army)) {
+            $this->armies->removeElement($army);
+            $army->setCompany(null);
+        }
+
+        return $this;
+    }
+
+    public function getPlayer()
+    {
+        return array_map(
+            function ($army) {
+                return $army->getPlayer();
+            },
+            $this->armies->toArray()
+        );
+    }
 
 }
