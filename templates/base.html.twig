@@ -60,12 +60,15 @@
 
             <!-- JS Customization -->
             <script src="{{ asset('assets/js/custom.js') }}"></script>
+            <script  src="{{ asset('assets/js/components/hs.count-qty.js') }}"></script>
 
             <!-- JS Plugins Init. -->
             <script>
               $(document).on('ready', function () {
                 // initialization of go to
                 $.HSCore.components.HSGoTo.init('.js-go-to');
+
+                  $.HSCore.components.HSCountQty.init('.js-quantity');
 
                 // initialization of tabs
                 $.HSCore.components.HSTabs.init('[role="tablist"]');

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +36,38 @@ class Player
         $this->armies = new ArrayCollection();
     }
 
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
 
 
     public function getArmies()
@@ -46,7 +79,6 @@ class Player
     {
         if (!$this->armies->contains($army)) {
             $this->armies->add($army);
-            $army->setArmy($this);
         }
 
         return $this;
@@ -56,7 +88,6 @@ class Player
     {
         if ($this->armies->contains($army)) {
             $this->armies->removeElement($army);
-            $army->setArmy(null);
         }
 
         return $this;

@@ -209,21 +209,19 @@ class Unit
         return $this->armies->toArray();
     }
 
-    public function addJob(Army $army)
+    public function addArmy(Army $army)
     {
         if (!$this->armies->contains($army)) {
             $this->armies->add($army);
-            $army->setCompany($this);
         }
 
         return $this;
     }
 
-    public function removeJob(Army $army)
+    public function removeArmy(Army $army)
     {
         if ($this->armies->contains($army)) {
             $this->armies->removeElement($army);
-            $army->setCompany(null);
         }
 
         return $this;
