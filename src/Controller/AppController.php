@@ -42,11 +42,11 @@ class AppController extends Controller
      *
      * @param Request                $request
      *
-     * @param Calculator            $calculateur
+     * @param Calculator            $calculator
      *
      * @return Response
      */
-    public function calcule(EntityManagerInterface $entityManager, Request $request, Calculator $calculateur)
+    public function calcule(EntityManagerInterface $entityManager, Request $request, Calculator $calculator)
     {
         $playerName = $request->get('player');
         $armyData = $request->get('army');
@@ -62,25 +62,51 @@ class AppController extends Controller
 
         foreach ( $armyData as $unitId => $qty) {
             $unit = $entityManager->getRepository('App:Unit')->find($unitId);
+            // If no unit found we skip the line
+            if (is_null($unit)) {
+                continue;
+            }
 
-            $army = new Army();
+            // If the quantity is an empty string we skip the line
+            if ($qty === "") {
+                continue;
+            }
+
+            // We search a existing army to update
+            $army = $entityManager->getRepository('App:Army')->findOneBy(
+                [
+                    'player' => $player,
+                    'unit' => $unit
+                ]
+            );
+
+
+            if (is_null($army)) {
+                $army = new Army();
+            }
+
             $army->setPlayer($player);
             $army->setUnit($unit);
             $army->setQuantity($qty);
             $entityManager->persist($army);
+            $entityManager->flush();
+            unset($army);
+
         }
 
         $entityManager->flush();
 
 
-        $calcule = $calculateur->setPlayer($player);
 
+        $calculator->setPlayer($player);
+        $calculator->compilation();
 
+        dump($calculator->getCalculatedArmy());
 
 
         return $this->render(
             'calcule.html.twig',
-            [ 'calcule' => $calcule ]
+            [ 'calculator' => $calculator ]
         );
     }
 }
