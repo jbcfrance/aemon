@@ -23,6 +23,11 @@ class Player
     private $name;
 
     /**
+     * @ORM\Column(type="string", name="link")
+     */
+    private $link;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Army", mappedBy="player", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     protected $armies;
@@ -101,5 +106,21 @@ class Player
             },
             $this->armies->toArray()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
     }
 }

@@ -3,6 +3,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Army;
+use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +45,35 @@ class AppController extends Controller
      */
     public function calcule(EntityManagerInterface $entityManager, Request $request)
     {
-        $player = $request->get('player');
+        $playerName = $request->get('player');
         $armyData = $request->get('army');
-        dump($player);
+        dump($playerName);
         dump($armyData);
+
+        $link = uniqid($playerName.'_'.date('Y-m-d').'_');
+
+        $player = new Player();
+        $player->setName($playerName);
+        $player->setLink($link);
+        $entityManager->persist($player);
+
+        foreach ($armyData as $unitTypeid => $unitsData) {
+            $unitType = $entityManager->getRepository('App:UnitType')->find($unitTypeid);
+            foreach ( $unitsData as $unitId => $qty) {
+                $unit = $entityManager->getRepository('App:Unit')->find($unitId);
+
+                $army = new Army();
+                $army->setPlayer($player);
+                $army->setUnit($unit);
+                $army->setQuantity($qty);
+                $entityManager->persist($army);
+            }
+
+        }
+
+
+
+
 
         return $this->render(
             'calcule.html.twig',
