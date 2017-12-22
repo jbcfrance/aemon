@@ -80,8 +80,7 @@ class AppController extends Controller
 
         return $this->render(
             'calcule.html.twig',
-            [
-            ]
+            [ 'calcule' => $calcule ]
         );
     }
 }
