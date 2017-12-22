@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Army;
 use App\Entity\Player;
+use App\Services\Calculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,9 +42,11 @@ class AppController extends Controller
      *
      * @param Request                $request
      *
-     * @return void
+     * @param Calculator            $calculateur
+     *
+     * @return Response
      */
-    public function calcule(EntityManagerInterface $entityManager, Request $request)
+    public function calcule(EntityManagerInterface $entityManager, Request $request, Calculator $calculateur)
     {
         $playerName = $request->get('player');
         $armyData = $request->get('army');
@@ -57,20 +60,20 @@ class AppController extends Controller
         $player->setLink($link);
         $entityManager->persist($player);
 
-        foreach ($armyData as $unitTypeid => $unitsData) {
-            $unitType = $entityManager->getRepository('App:UnitType')->find($unitTypeid);
-            foreach ( $unitsData as $unitId => $qty) {
-                $unit = $entityManager->getRepository('App:Unit')->find($unitId);
+        foreach ( $armyData as $unitId => $qty) {
+            $unit = $entityManager->getRepository('App:Unit')->find($unitId);
 
-                $army = new Army();
-                $army->setPlayer($player);
-                $army->setUnit($unit);
-                $army->setQuantity($qty);
-                $entityManager->persist($army);
-            }
-
+            $army = new Army();
+            $army->setPlayer($player);
+            $army->setUnit($unit);
+            $army->setQuantity($qty);
+            $entityManager->persist($army);
         }
 
+        $entityManager->flush();
+
+
+        $calcule = $calculateur->setPlayer($player);
 
 
 

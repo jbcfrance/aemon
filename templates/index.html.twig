@@ -282,7 +282,7 @@
                         <td>{{ level }}</td>
                     {% for unit in unit %}
                       <td>
-                        <input name="army[{{ unit.type.id }}][{{ unit.id }}]" id="unit_{{ unit.type.id }}_{{ unit.id }}" class="form-control form-control-xs" type="number" placeholder="Nbr unitée">
+                        <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs" type="number" placeholder="Nbr unitée">
                       </td>
                     {% endfor %}
                       </tr>
