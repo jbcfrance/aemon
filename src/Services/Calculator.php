@@ -17,12 +17,17 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class Calculator
 {
     /**
+     * @var array $statsToCompile
+     */
+    private $statsToCompile = ['quantity', 'defense', 'attack', 'power', 'health'];
+
+    /**
      * @var Player $player
      */
     private $player = null;
 
     /**
-     * @var array
+     * @var array $calculatedArmy
      */
     private $calculatedArmy = [];
 
@@ -43,21 +48,20 @@ class Calculator
 
         // Initialize the calculatedArmy array
         $this->calculatedArmy = [
-            'TotalQuantity' => 0,
-            'TotalDefense' => 0,
-            'TotalAttack' => 0,
-            'TotalPower' => 0,
-            'resultByUnitTypes' => []
+            'totalQuantity' => 0,
+            'totalDefense' => 0,
+            'totalAttack' => 0,
+            'totalPower' => 0,
+            'totalHealth' => 0
         ];
 
-        // Initialize the calculatedArmy array with the unitTypes
-        foreach ($unitTypes as $unitType) {
-            $this->calculatedArmy['resultByUnitTypes'][$unitType->getName()] = [
-                'quantity' => 0,
-                'defense' => 0,
-                'attack' => 0,
-                'power' => 0
-            ];
+        foreach ( $this->statsToCompile as $stats) {
+
+
+            // Initialize the calculatedArmy array with the unitTypes
+            foreach ($unitTypes as $unitType) {
+                $this->calculatedArmy[$unitType->getName()][$stats] = 0;
+            }
         }
 
     }
@@ -93,11 +97,10 @@ class Calculator
            throw new Exception('No Army data found for the player : '.$this->player->getName());
         }
 
-        $statsToCompile = ['quantity', 'defense', 'attack', 'power'];
 
         // Each Troop data is compiled
         foreach ($troops as $troop) {
-            foreach ($statsToCompile as $stats) {
+            foreach ($this->statsToCompile as $stats) {
                 $this->compileStatistic($troop, $stats);
             }
         }
@@ -121,8 +124,8 @@ class Calculator
         $unitType = $army->getUnit()->getType();
 
         //Initialize if necessary
-        if (!isset($this->calculatedArmy['resultByUnitTypes'][$unitType->getName()])) {
-            $this->calculatedArmy['resultByUnitTypes'][$unitType->getName()] = 0;
+        if (!isset($this->calculatedArmy[$unitType->getName()][$stats])) {
+            $this->calculatedArmy[$unitType->getName()][$stats] = 0;
         }
 
         $statsMethod = 'calculate'.ucfirst($stats);
@@ -133,8 +136,8 @@ class Calculator
         }
 
         // Finally adding the quantity to the counter
-        $this->calculatedArmy['resultByUnitTypes'][$unitType->getName()][$stats] += $this->{$statsMethod}($army);
-        $this->calculatedArmy['Total'.ucfirst($stats)] += $this->{$statsMethod}($army);
+        $this->calculatedArmy[$unitType->getName()][$stats] += $this->{$statsMethod}($army);
+        $this->calculatedArmy['total'.ucfirst($stats)] += $this->{$statsMethod}($army);
 
         return true;
 
@@ -195,6 +198,21 @@ class Calculator
         }
 
         return ($army->getQuantity() * $army->getUnit()->getPower());
+
+    }
+
+    /**
+     * @param Army $army
+     *
+     * @return bool|float|int
+     */
+    private function calculateHealth(Army $army) {
+
+        if (is_null($army)) {
+            return false;
+        }
+
+        return ($army->getQuantity() * $army->getUnit()->getHealth());
 
     }
 

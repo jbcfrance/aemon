@@ -41,18 +41,18 @@ CREATE TABLE `unit` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `unit_type` int(11) DEFAULT NULL,
   `level` int(11) NOT NULL,
-  `pouvoir` decimal(10,2) NOT NULL,
-  `attaque` int(11) NOT NULL,
+  `power` decimal(10,2) NOT NULL,
+  `attack` int(11) NOT NULL,
   `defense` int(11) NOT NULL,
-  `sante` int(11) NOT NULL,
-  `vitesse` int(11) NOT NULL
+  `health` int(11) NOT NULL,
+  `speed` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `unit`
 --
 
-INSERT INTO `unit` (`id`, `name`, `unit_type`, `level`, `pouvoir`, `attaque`, `defense`, `sante`, `vitesse`) VALUES
+INSERT INTO `unit` (`id`, `name`, `unit_type`, `level`, `power`, `attack`, `defense`, `health`, `speed`) VALUES
 (2, 'Milice', 1, 1, '2.00', 8, 8, 11, 9),
 (3, 'Fantassin', 1, 2, '2.80', 10, 10, 13, 9),
 (4, 'Epée-loué', 1, 3, '3.80', 16, 15, 17, 10),

@@ -50,8 +50,10 @@ class AppController extends Controller
     {
         $playerName = $request->get('player');
         $armyData = $request->get('army');
-        dump($playerName);
-        dump($armyData);
+        //dump($playerName);
+        //dump($armyData);
+
+        $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
         $link = uniqid($playerName.'_'.date('Y-m-d').'_');
 
@@ -96,17 +98,13 @@ class AppController extends Controller
 
         $entityManager->flush();
 
-
-
         $calculator->setPlayer($player);
         $calculator->compilation();
 
-        dump($calculator->getCalculatedArmy());
-
-
         return $this->render(
             'calcule.html.twig',
-            [ 'calculator' => $calculator ]
+            [ 'calculatedArmy' => $calculator->getCalculatedArmy(),
+                'unitTypes' => $unitTypes]
         );
     }
 }

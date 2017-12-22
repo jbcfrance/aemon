@@ -267,24 +267,27 @@
                     <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped ">
+                      <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
                       <thead>
                       <tr>
-                        <th>Level</th>
+                        <th class="g-font-size-18">Level</th>
                       {% for type in unitTypes %}
-                        <th class="text-center">{{ type }}</th>
+                        <th class="text-center g-font-size-18 ">{{ type }}</th>
                       {% endfor%}
+                        <th class="g-font-size-18">Level</th>
                       </tr>
                       </thead>
                       <tbody>
                     {% for level,unit in units %}
-                      <tr>
-                        <td>{{ level }}</td>
+                      <tr class="g-pa-0 g-ma-0">
+                        <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
                     {% for unit in unit %}
-                      <td>
-                        <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs" type="number" placeholder="Nbr unitée">
+                      <td class="g-pa-0 g-ma-0">
+                        <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs no-margin" type="text" placeholder="">
                       </td>
                     {% endfor %}
+                        <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
                       </tr>
                     {% endfor %}
                       </tbody>
@@ -295,154 +298,6 @@
                   <input type="submit" class="btn btn-md u-btn-3d u-btn-primary g-mr-10 g-mb-15" value="Calculer"/>
                   <input type="reset" class="btn btn-md u-btn-3d u-btn-pink g-mr-10 g-mb-15" value="Remettre à zéro"/>
                 </form>
-              </div>
-              <div class="card-block g-pa-0">
-                <!-- Product Table -->
-                <div class="table-responsive">
-                  <table class="table table-bordered u-table--v2">
-                    <thead class="text-uppercase g-letter-spacing-1">
-                      <tr>
-                        <th class="g-font-weight-300 g-color-black">Product Name</th>
-                        <th class="g-font-weight-300 g-color-black g-min-width-200">Locations</th>
-                        <th class="g-font-weight-300 g-color-black">Status</th>
-                        <th class="g-font-weight-300 g-color-black">Contacts</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td class="align-middle text-nowrap">
-                          <h4 class="h6 g-mb-2">Lenovo Group</h4>
-                          <div class="js-rating g-font-size-12 g-color-primary" data-rating="3.5"></div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="d-flex">
-                            <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
-                            <span>389ZA2 DeClaudine, CA, USA</span>
-                          </div>
-                        </td>
-                        <td class="align-middle">
-                          <a class="btn btn-block u-btn-primary g-rounded-50 g-py-5" href="#!">
-                            <i class="fa fa-arrows-v g-mr-5"></i> Middle
-                          </a>
-                        </td>
-                        <td class="align-middle text-nowrap">
-                          <span class="d-block g-mb-5">
-                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 4768 97655
-                          </span>
-                          <span class="d-block">
-                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> contact@lenovo.com
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="align-middle text-nowrap">
-                          <h4 class="h6 g-mb-2">Samsung Electronics</h4>
-                          <div class="js-rating g-font-size-12 g-color-primary" data-rating="4.5"></div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="d-flex">
-                            <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
-                            <span>738AD Lorena Spur, London, UK</span>
-                          </div>
-                        </td>
-                        <td class="align-middle">
-                          <a class="btn btn-block u-btn-pink g-rounded-50 g-py-5" href="#!">
-                            <i class="fa fa-level-up g-mr-5"></i> High
-                          </a>
-                        </td>
-                        <td class="align-middle text-nowrap">
-                          <span class="d-block g-mb-5">
-                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +44 7689 7655
-                          </span>
-                          <span class="d-block">
-                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> users@samsung.com
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="align-middle text-nowrap">
-                          <h4 class="h6 g-mb-2">Sony Corp.</h4>
-                          <div class="js-rating g-font-size-12 g-color-primary" data-rating="2"></div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="d-flex">
-                            <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
-                            <span>044C1 Port Dickson, BC, Canada</span>
-                          </div>
-                        </td>
-                        <td class="align-middle">
-                          <a class="btn btn-block u-btn-cyan g-rounded-50 g-py-5" href="#!">
-                            <i class="fa fa-sort-amount-desc g-mr-5"></i> Deep
-                          </a>
-                        </td>
-                        <td class="align-middle text-nowrap">
-                          <span class="d-block g-mb-5">
-                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 0739 3644
-                          </span>
-                          <span class="d-block">
-                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> clients@sony.com
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="align-middle text-nowrap">
-                          <h4 class="h6 g-mb-2">Apple Inc.</h4>
-                          <div class="js-rating g-font-size-12 g-color-primary" data-rating="5"></div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="d-flex">
-                            <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
-                            <span>07W2 Donell Lodge, NY, USA</span>
-                          </div>
-                        </td>
-                        <td class="align-middle">
-                          <a class="btn btn-block u-btn-purple g-rounded-50 g-py-5" href="#!">
-                            <i class="fa fa-level-down g-mr-5"></i> Down
-                          </a>
-                        </td>
-                        <td class="align-middle text-nowrap">
-                          <span class="d-block g-mb-5">
-                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 6589-96451
-                          </span>
-                          <span class="d-block">
-                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> mail@appple.com
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="align-middle text-nowrap">
-                          <h4 class="h6 g-mb-2">Dell Corporation</h4>
-                          <div class="js-rating g-font-size-12 g-color-primary" data-rating="4"></div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="d-flex">
-                            <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
-                            <span>1A9WA4 Wanderben, Berlin, Germany</span>
-                          </div>
-                        </td>
-                        <td class="align-middle">
-                          <a class="btn btn-block u-btn-deeporange g-rounded-50 g-py-5" href="#!">
-                            <i class="fa fa-bolt g-mr-5"></i> Stabile
-                          </a>
-                        </td>
-                        <td class="align-middle text-nowrap">
-                          <span class="d-block g-mb-5">
-                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +49 3868 4792
-                          </span>
-                          <span class="d-block">
-                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> clients@dell.com
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- End Product Table -->
               </div>
             </div>
             <!-- End Product Table Panel -->
