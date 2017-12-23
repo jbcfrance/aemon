@@ -25,7 +25,7 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
-      anonymous: ~
+      anonymous: false
       pattern:    ^/
       http_basic: ~
       provider: our_db_provider

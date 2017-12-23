@@ -1,10 +1,21 @@
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ title }}">
+
+        <meta property="og:description" content="Aemon GOT Allegance">
+
+        <meta name="msapplication-TileColor" content="#222222">
+        <meta name="application-name" content="{{ title }}">
+        <meta name="msapplication-tooltip" content="{{ title }}">
+
+
+      <title>{% block title %}{{ title }}{% endblock %}</title>
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
         {% block stylesheets %}
@@ -73,7 +84,6 @@
                   <h2 class="u-heading-v2__title h6 text-uppercase mb-0">About Us</h2>
                 </div>
 
-                <p>About Unify dolor sit amet, consectetur adipiscing elit. Maecenas eget nisl id libero tincidunt sodales.</p>
               </div>
               <!-- End Footer Content -->
 

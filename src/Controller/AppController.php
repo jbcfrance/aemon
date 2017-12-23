@@ -3,15 +3,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Army;
-use App\Entity\Player;
-use App\Services\Calculator;
+use App\Entity\User;
+use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppController extends Controller
 {
@@ -43,129 +42,70 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/calcule", name="calcule")
+     *
+     * @Route("/login", name="login")
      * @param EntityManagerInterface $entityManager
-     *
-     * @param Request                $request
-     *
-     * @param Calculator            $calculator
      *
      * @return Response
      */
-    public function calcule(EntityManagerInterface $entityManager, Request $request, Calculator $calculator)
+    public function login(EntityManagerInterface $entityManager)
     {
-
-
-
-        $playerName = $request->get('player');
-        $armyData = $request->get('army');
-
-
-        $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
-
-        $link = uniqid(str_replace(' ','-',$playerName).'_'.date('Y-m-d').'_');
-
-        $player = new Player();
-        $player->setName($playerName);
-        $player->setLink($link);
-        $entityManager->persist($player);
-
-        foreach ( $armyData as $unitId => $qty) {
-            $unit = $entityManager->getRepository('App:Unit')->find($unitId);
-            // If no unit found we skip the line
-            if (is_null($unit)) {
-                continue;
-            }
-
-            // If the quantity is an empty string we skip the line
-            if ($qty === "") {
-                continue;
-            }
-
-            // We search a existing army to update
-            $army = $entityManager->getRepository('App:Army')->findOneBy(
-                [
-                    'player' => $player,
-                    'unit' => $unit
-                ]
-            );
-
-
-            if (is_null($army)) {
-                $army = new Army();
-            }
-
-            $army->setPlayer($player);
-            $army->setUnit($unit);
-            $army->setQuantity($qty);
-            $entityManager->persist($army);
-            $entityManager->flush();
-            unset($army);
-
-        }
-
-        $entityManager->flush();
-
-        if (empty($player->getArmies())) {
-            return $this->redirectToRoute('homepage', ['flash'=>'No army to calcul']);
-        }
-        try {
-            $calculator->setPlayer($player);
-            $calculator->compilation();
-        }catch ( Exception $exception) {
-            return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
-        }
-
-
         return $this->render(
-            'calcule.html.twig',
+            'user/login.html.twig',
             [
-                'calculatedArmy' => $calculator->getCalculatedArmy(),
-                'unitTypes' => $unitTypes,
-                'player' => $player
+
             ]
         );
     }
 
     /**
-     * @Route("/calcule/{link}" , name="calcul_link")
      *
-     * @param                        $link
+     * @Route("/logout", name="logout")
      * @param EntityManagerInterface $entityManager
-     * @param Calculator             $calculator
-     *
-     * @return Response
      */
-    public function show($link, EntityManagerInterface $entityManager, Calculator $calculator)
+    public function logout(EntityManagerInterface $entityManager)
     {
 
-        if ($link === "") {
-            return $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
-        }
-
-        $player = $entityManager->getRepository('App:Player')->findOneBy(['link'=>$link]);
-
-        if (is_null($player)) {
-            return $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
-        }
+    }
 
 
-        $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
+    /**
+     *
+     * @Route("/register", name="register")
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        // 1) build the form
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
 
-        try {
-            $calculator->setPlayer($player);
-            $calculator->compilation();
-        }catch ( Exception $exception) {
-            return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            // 4) save the User!
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render(
-            'calcule.html.twig',
-            [
-                'calculatedArmy' => $calculator->getCalculatedArmy(),
-                'unitTypes' => $unitTypes,
-                'player' => $player
-            ]
+            'user/register.html.twig',
+            array('form' => $form->createView())
         );
     }
+
 }
