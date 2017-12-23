@@ -59,8 +59,6 @@ class AppController extends Controller
 
         $playerName = $request->get('player');
         $armyData = $request->get('army');
-        //dump($playerName);
-        //dump($armyData);
 
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
@@ -115,7 +113,6 @@ class AppController extends Controller
             $calculator->setPlayer($player);
             $calculator->compilation();
         }catch ( Exception $exception) {
-            dump($exception);
             return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
         }
 
@@ -159,7 +156,6 @@ class AppController extends Controller
             $calculator->setPlayer($player);
             $calculator->compilation();
         }catch ( Exception $exception) {
-            dump($exception);
             return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
         }
 
