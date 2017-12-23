@@ -1,18 +1,43 @@
 security:
-    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
-    providers:
-        in_memory: { memory: ~ }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: ~
+  # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+  providers:
+    in_memory:
+      memory:
+        users:
+          jbcfrance:
+            password: $2y$12$GiTBWBmwtFQrqzQL//4SC.8njTtXNOiaXQUE7SH0lRmIaWjIU2.2C
+            roles: 'ROLE_ADMIN'
+          aemon:
+            password: $2y$12$EvgpMY/Eb3AsZJzir7MKEe7hf4Ra/xA4igwEQ/vpPnp/BgxMhIHIy
+            roles: 'ROLE_USER'
+    our_db_provider:
+      entity:
+        class: App\Entity\User
+        property: username
+  encoders:
+    Symfony\Component\Security\Core\User\User:
+      algorithm: bcrypt
+      cost: 12
+    App\Entity\User:
+      algorithm: bcrypt
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      anonymous: ~
+      pattern:    ^/
+      http_basic: ~
+      provider: our_db_provider
 
-            # activate different ways to authenticate
+  access_control:
+  # require ROLE_ADMIN for /admin*
+    - { path: ^/admin, roles: ROLE_ADMIN }
 
-            # http_basic: ~
-            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+  # activate different ways to authenticate
 
-            # form_login: ~
-            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+  # http_basic: ~
+  # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+  # form_login: ~
+  # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
