@@ -19,7 +19,7 @@ class Calculator
     /**
      * @var array $statsToCompile
      */
-    private $statsToCompile = ['quantity', 'defense', 'attack', 'power', 'health'];
+    private $statsToCompile = ['defense', 'attack', 'power', 'health', 'quantity'];
 
     /**
      * @var Player $player

@@ -30,7 +30,7 @@ class AppController extends Controller
         return $this->render(
             'index.html.twig',
             [
-                'units'=>$units,
+                'unitsByType'=>$units,
                 'unitTypes'=>$unitTypes
             ]
         );
@@ -103,8 +103,50 @@ class AppController extends Controller
 
         return $this->render(
             'calcule.html.twig',
-            [ 'calculatedArmy' => $calculator->getCalculatedArmy(),
-                'unitTypes' => $unitTypes]
+            [
+                'calculatedArmy' => $calculator->getCalculatedArmy(),
+                'unitTypes' => $unitTypes,
+                'player' => $player
+            ]
+        );
+    }
+
+    /**
+     * @Route("/calcule/{link}" , name="calcul_link")
+     *
+     * @param                        $link
+     * @param EntityManagerInterface $entityManager
+     * @param Calculator             $calculator
+     *
+     * @return Response
+     */
+    public function show($link, EntityManagerInterface $entityManager, Calculator $calculator)
+    {
+
+        if ($link === "") {
+            $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
+        }
+
+        $player = $entityManager->getRepository('App:Player')->findOneBy(['link'=>$link]);
+
+        if (is_null($player)) {
+            $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
+        }
+
+
+        $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
+
+
+        $calculator->setPlayer($player);
+        $calculator->compilation();
+
+        return $this->render(
+            'calcule.html.twig',
+            [
+                'calculatedArmy' => $calculator->getCalculatedArmy(),
+                'unitTypes' => $unitTypes,
+                'player' => $player
+            ]
         );
     }
 }

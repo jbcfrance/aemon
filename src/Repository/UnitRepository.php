@@ -18,7 +18,8 @@ class UnitRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('u')
             ->select('u')
-            ->orderBy('u.level', 'DESC');
+            ->orderBy('u.level', 'DESC')
+            ->addOrderBy('u.type' , 'ASC');
         $result = $qb->getQuery()->getResult();
 
         $return = [];
@@ -27,7 +28,7 @@ class UnitRepository extends ServiceEntityRepository
             if(!isset($return[$unit->getLevel()])) {
                 $return[$unit->getLevel()] = [];
             }
-            $return[$unit->getLevel()][$unit->getType()->getName()] = $unit;
+            $return[$unit->getLevel()][$unit->getType()->getId()] = $unit;
         }
 
 
