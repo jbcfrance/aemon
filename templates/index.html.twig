@@ -1,134 +1,78 @@
 {% extends 'base.html.twig' %}
+{% set title = 'Aemon calculator' %}
 {% block body %}
-  <main>
-    <!-- Header -->
-    <header id="js-header" class="u-header u-header--static">
-      <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-10">
-        <nav class="js-mega-menu navbar navbar-expand-lg hs-menu-initialized hs-menu-horizontal">
-          <div class="container">
-            <!-- Responsive Toggle Button -->
-            <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-3 g-right-0" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
-              <span class="hamburger hamburger--slider">
-            <span class="hamburger-box">
-              <span class="hamburger-inner"></span>
-              </span>
-              </span>
-            </button>
-            <!-- End Responsive Toggle Button -->
+<section class="g-mb-100">
+  <div class="container">
+    <div class="row">
+      <!-- Profile Sidebar -->
+      <div class="col-lg-3 g-mb-50 g-mb-0--lg">
 
-            <!-- Logo -->
-            <a href="{{ path('homepage') }}" class="navbar-brand">
-            </a>
-            <!-- End Logo -->
-
-          </div>
-        </nav>
-      </div>
-    </header>
-    <!-- End Header -->
-
-
-    <section class="g-mb-100">
-      <div class="container">
-        <div class="row">
-          <!-- Profile Sidebar -->
-          <div class="col-lg-3 g-mb-50 g-mb-0--lg">
-
-            <!-- Sidebar Navigation -->
-            <div class="list-group list-group-border-0 g-mb-40">
-              <!-- Overall -->
-              <a href="page-profile-main-1.html" class="list-group-item justify-content-between active g-bg-darkred">
-                <span><i class="icon-home g-pos-rel g-top-1 g-mr-8"></i> Calculateur</span>
-                {#<span class="u-label g-font-size-11 g-bg-white g-color-main g-rounded-20 g-px-10">2</span>#}
-              </a>
-              <!-- End Overall -->
-            </div>
-            <!-- End Sidebar Navigation -->
-
-          </div>
-          <!-- End Profile Sidebar -->
-
-          <!-- Profile Content -->
-          <div class="col-lg-9">
-            <!-- Product Table Panel -->
-            <div class="card border-0">
-              <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-                <h3 class="h6 mb-0">
-                    <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
-                  </h3>
-              </div>
-              <div class="card-block g-pa-0">
-                <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
-                  <div class="form-group g-mb-20">
-                    <label class="g-mb-10" for="inputGroup1_1">Votre pseudo</label>
-                    <input id="inputGroup1_1" name="player" class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
-                    <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table table-striped ">
-                      <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
-                      <thead>
-                      <tr>
-                        <th class="g-font-size-18">Level</th>
-                      {% for type in unitTypes %}
-                        <th class="text-center g-font-size-18 ">{{ type }}</th>
-                      {% endfor%}
-                        <th class="g-font-size-18">Level</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                    {% for level,units in unitsByType %}
-                      <tr class="g-pa-0 g-ma-0">
-                        <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
-                    {% for unit in units %}
-                      <td class="g-pa-0 g-ma-0">
-                        <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs no-margin" type="text" placeholder="">
-                      </td>
-                    {% endfor %}
-                        <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
-                      </tr>
-                    {% endfor %}
-                      </tbody>
-                  </table>
-                  </div>
-                  <input type="submit" class="btn btn-md u-btn-3d u-btn-primary g-mr-10 g-mb-15" value="Calculer"/>
-                  <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Remettre à zéro"/>
-                </form>
-              </div>
-            </div>
-            <!-- End Product Table Panel -->
-          </div>
-          <!-- End Profile Content -->
+        <!-- Sidebar Navigation -->
+        <div class="list-group list-group-border-0 g-mb-40">
+          <!-- Overall -->
+          <a href="page-profile-main-1.html" class="list-group-item justify-content-between active g-bg-darkred">
+            <span><i class="icon-home g-pos-rel g-top-1 g-mr-8"></i> Calculateur</span>
+            {#<span class="u-label g-font-size-11 g-bg-white g-color-main g-rounded-20 g-px-10">2</span>#}
+          </a>
+          <!-- End Overall -->
         </div>
+        <!-- End Sidebar Navigation -->
+
       </div>
-    </section>
+      <!-- End Profile Sidebar -->
 
-    <!-- Footer -->
-    <div id="contacts-section" class="g-bg-black-opacity-0_9 g-color-white-opacity-0_8 g-py-60">
-      <div class="container">
-        <div class="row">
-          <!-- Footer Content -->
-          <div class="col-lg-3 col-md-6 g-mb-40 g-mb-0--lg">
-            <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
-              <h2 class="u-heading-v2__title h6 text-uppercase mb-0">About Us</h2>
-            </div>
-
-            <p>About Unify dolor sit amet, consectetur adipiscing elit. Maecenas eget nisl id libero tincidunt sodales.</p>
+      <!-- Profile Content -->
+      <div class="col-lg-9">
+        <!-- Product Table Panel -->
+        <div class="card border-0">
+          <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+            <h3 class="h6 mb-0">
+                <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
+              </h3>
           </div>
-          <!-- End Footer Content -->
-
+          <div class="card-block g-pa-0">
+            <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
+              <div class="form-group g-mb-20">
+                <label class="g-mb-10" for="inputGroup1_1">Votre pseudo</label>
+                <input id="inputGroup1_1" name="player" class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
+                <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped ">
+                  <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
+                  <thead>
+                  <tr>
+                    <th class="g-font-size-18">Level</th>
+                  {% for type in unitTypes %}
+                    <th class="text-center g-font-size-18 ">{{ type }}</th>
+                  {% endfor%}
+                    <th class="g-font-size-18">Level</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for level,units in unitsByType %}
+                  <tr class="g-pa-0 g-ma-0">
+                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
+                {% for unit in units %}
+                  <td class="g-pa-0 g-ma-0">
+                    <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs no-margin" type="text" placeholder="">
+                  </td>
+                {% endfor %}
+                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+              <input type="submit" class="btn btn-md u-btn-3d u-btn-primary g-mr-10 g-mb-15" value="Calculer"/>
+              <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Remettre à zéro"/>
+            </form>
+          </div>
         </div>
+        <!-- End Product Table Panel -->
       </div>
+      <!-- End Profile Content -->
     </div>
-    <!-- End Footer -->
-
-    <a class="js-go-to u-go-to-v1" href="#!" data-type="fixed" data-position='{
-     "bottom": 15,
-     "right": 15
-   }' data-offset-top="400" data-compensation="#js-header" data-show-effect="zoomIn">
-      <i class="hs-icon hs-icon-arrow-top"></i>
-    </a>
-  </main>
-
-  <div class="u-outer-spaces-helper"></div>
+  </div>
+</section>
 {% endblock %}

@@ -1,10 +1,21 @@
+{% set title = 'Aemon' %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ title }}">
+
+        <meta property="og:description" content="Aemon GOT Allegance">
+
+        <meta name="msapplication-TileColor" content="#222222">
+        <meta name="application-name" content="{{ title }}">
+        <meta name="msapplication-tooltip" content="{{ title }}">
+
+
+      <title>{% block title %}{{ title }}{% endblock %}</title>
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
         {% block stylesheets %}
@@ -33,7 +44,55 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    <main>
+      {% block header %}
+        <!-- Header -->
+        <header id="js-header" class="u-header u-header--static">
+          <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-10">
+            <nav class="js-mega-menu navbar navbar-expand-lg hs-menu-initialized hs-menu-horizontal">
+              <div class="container">
+                <!-- Responsive Toggle Button -->
+                <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-3 g-right-0" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
+            <span class="hamburger hamburger--slider">
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+            </span>
+            </span>
+                </button>
+                <!-- End Responsive Toggle Button -->
+
+                <!-- Logo -->
+                <a href="{{ path('homepage') }}" class="navbar-brand">
+                </a>
+                <!-- End Logo -->
+
+              </div>
+            </nav>
+          </div>
+        </header>
+        <!-- End Header -->
+      {% endblock %}
+      {% block body %}{% endblock %}
+      {% block footer %}
+        <!-- Footer -->
+        <div id="contacts-section" class="g-bg-black-opacity-0_9 g-color-white-opacity-0_8 g-py-60">
+          <div class="container">
+            <div class="row">
+              <!-- Footer Content -->
+              <div class="col-lg-3 col-md-6 g-mb-40 g-mb-0--lg">
+                <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
+                  <h2 class="u-heading-v2__title h6 text-uppercase mb-0">About Us</h2>
+                </div>
+
+              </div>
+              <!-- End Footer Content -->
+
+            </div>
+          </div>
+        </div>
+        <!-- End Footer -->
+      {% endblock %}
+    </main>
         {% block javascripts %}
             <!-- JS Global Compulsory -->
             <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
