@@ -10,7 +10,7 @@
         <!-- Sidebar Navigation -->
         <div class="list-group list-group-border-0 g-mb-40">
           <!-- Overall -->
-          <a href="page-profile-main-1.html" class="list-group-item justify-content-between active g-bg-darkred">
+          <a href="{{ path('homepage') }}" class="list-group-item justify-content-between active g-bg-darkred">
             <span><i class="icon-home g-pos-rel g-top-1 g-mr-8"></i> Calculateur</span>
             {#<span class="u-label g-font-size-11 g-bg-white g-color-main g-rounded-20 g-px-10">2</span>#}
           </a>
@@ -30,11 +30,26 @@
                 <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
               </h3>
           </div>
+          {% if flash is not null %}
+          <div class="alert alert-dismissible fade show g-bg-darkred g-color-white rounded-0" role="alert">
+            <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+            <div class="media">
+              <span class="d-flex g-mr-10 g-mt-5">
+                <i class="icon-ban g-font-size-25"></i>
+              </span>
+              <span class="media-body align-self-center">
+                <strong>Error!</strong> {{ flash }}
+              </span>
+            </div>
+          </div>
+          {% endif %}
           <div class="card-block g-pa-0">
             <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
               <div class="form-group g-mb-20">
                 <label class="g-mb-10" for="inputGroup1_1">Votre pseudo</label>
-                <input id="inputGroup1_1" name="player" class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
+                <input id="inputGroup1_1" name="player" required class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
                 <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
               </div>
               <div class="table-responsive">

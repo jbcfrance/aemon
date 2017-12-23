@@ -8,6 +8,7 @@ use App\Entity\Player;
 use App\Services\Calculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,20 +19,25 @@ class AppController extends Controller
      * @Route("/", name="homepage")
      * @param EntityManagerInterface $entityManager
      *
+     * @param Request                $request
+     *
      * @return Response
      */
-    public function index(EntityManagerInterface $entityManager)
+    public function index(EntityManagerInterface $entityManager, Request $request)
     {
         // Get all units
         $units = $entityManager->getRepository('App:Unit')->getAllUnitsByType();
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
+
+        $flash = $request->get('flash', null);
 
 
         return $this->render(
             'index.html.twig',
             [
                 'unitsByType'=>$units,
-                'unitTypes'=>$unitTypes
+                'unitTypes'=>$unitTypes,
+                'flash' => $flash
             ]
         );
     }
@@ -48,10 +54,14 @@ class AppController extends Controller
      */
     public function calcule(EntityManagerInterface $entityManager, Request $request, Calculator $calculator)
     {
+
+
+
         $playerName = $request->get('player');
         $armyData = $request->get('army');
         //dump($playerName);
         //dump($armyData);
+
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
@@ -98,8 +108,17 @@ class AppController extends Controller
 
         $entityManager->flush();
 
-        $calculator->setPlayer($player);
-        $calculator->compilation();
+        if (empty($player->getArmies())) {
+            return $this->redirectToRoute('homepage', ['flash'=>'No army to calcul']);
+        }
+        try {
+            $calculator->setPlayer($player);
+            $calculator->compilation();
+        }catch ( Exception $exception) {
+            dump($exception);
+            return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
+        }
+
 
         return $this->render(
             'calcule.html.twig',
