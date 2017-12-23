@@ -63,7 +63,7 @@ class AppController extends Controller
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
-        $link = uniqid($playerName.'_'.date('Y-m-d').'_');
+        $link = uniqid(str_replace(' ','-',$playerName).'_'.date('Y-m-d').'_');
 
         $player = new Player();
         $player->setName($playerName);
