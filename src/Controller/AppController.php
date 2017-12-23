@@ -143,21 +143,25 @@ class AppController extends Controller
     {
 
         if ($link === "") {
-            $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
+            return $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
         }
 
         $player = $entityManager->getRepository('App:Player')->findOneBy(['link'=>$link]);
 
         if (is_null($player)) {
-            $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
+            return $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
         }
 
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
-
-        $calculator->setPlayer($player);
-        $calculator->compilation();
+        try {
+            $calculator->setPlayer($player);
+            $calculator->compilation();
+        }catch ( Exception $exception) {
+            dump($exception);
+            return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
+        }
 
         return $this->render(
             'calcule.html.twig',
