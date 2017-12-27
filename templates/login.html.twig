@@ -1,4 +1,4 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
 {% set title = 'Aemon calculator' %}
 {% block body %}
     <!-- Login -->
@@ -9,12 +9,14 @@
             <header class="text-center mb-4">
               <h2 class="h2 g-color-black g-font-weight-600">Login</h2>
             </header>
-
+            {% if error %}
+              <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
             <!-- Form -->
-            <form class="g-py-15">
+            <form class="g-py-15" action="{{ path('login') }}"  method="post">
               <div class="mb-4">
-                <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Email:</label>
-                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15" type="email" placeholder="johndoe@gmail.com">
+                <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Username:</label>
+                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15" type="text" name="_username"  value="{{ last_username }}" placeholder="johndoe@gmail.com">
               </div>
 
               <div class="g-mb-35">
@@ -26,7 +28,7 @@
                     <a class="d-inline-block g-font-size-12 mb-2" href="#!">Forgot password?</a>
                   </div>
                 </div>
-                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15 mb-3" type="password" placeholder="Password">
+                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15 mb-3" type="password" name="_password" placeholder="Password">
                 <div class="row justify-content-between">
                   <div class="col-8 align-self-center">
                     <label class="form-check-inline u-check g-color-gray-dark-v5 g-font-size-13 g-pl-25 mb-0">
@@ -37,8 +39,9 @@
                       Keep signed in
                     </label>
                   </div>
+                  <input type="hidden" name="_target_path" value="/profile" />
                   <div class="col-4 align-self-center text-right">
-                    <button class="btn btn-md u-btn-primary rounded g-py-13 g-px-25" type="button">Login</button>
+                    <input type="submit" class="btn btn-md u-btn-primary rounded g-py-13 g-px-25" value="Login" />
                   </div>
                 </div>
               </div>
