@@ -13,16 +13,11 @@ class PlayerRepository extends ServiceEntityRepository
         parent::__construct($registry, Player::class);
     }
 
-    /*
-    public function findBySomething($value)
+    public function getCount()
     {
-        return $this->createQueryBuilder('p')
-            ->where('p.something = :value')->setParameter('value', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $players = $this->findAll();
+
+        return count($players);
     }
-    */
+
 }

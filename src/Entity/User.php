@@ -1,80 +1,63 @@
 <?php
-// src/Entity/User.php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
-* @ORM\Entity
-* @UniqueEntity(fields="email", message="Email already taken")
-* @UniqueEntity(fields="username", message="Username already taken")
-*/
-class User implements UserInterface
+ * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ */
+class User implements AdvancedUserInterface
 {
+    const ROLE_DEFAULT = 'ROLE_USER';
+
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
     /**
-    * @ORM\Id
-    * @ORM\Column(type="integer")
-    * @ORM\GeneratedValue(strategy="AUTO")
-    */
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     private $id;
 
     /**
-    * @ORM\Column(type="string", length=255, unique=true)
-    * @Assert\NotBlank()
-    * @Assert\Email()
-    */
-    private $email;
-
-    /**
-    * @ORM\Column(type="string", length=255, unique=true)
-    * @Assert\NotBlank()
-    */
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     */
     private $username;
 
     /**
-    * @Assert\NotBlank()
-    * @Assert\Length(max=4096)
-    */
-    private $plainPassword;
-
-    /**
-     * @ORM\Column(name="roles", type="string")
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
+     * @ORM\Column(name="password", type="string", length=255)
      */
-    private $roles;
-
-    /**
-    * The below length depends on the "algorithm" you use for encoding
-    * the password, but this works well with bcrypt.
-    *
-    * @ORM\Column(type="string", length=64)
-    */
     private $password;
 
     /**
-     * @ORM\Column(name="isValid")
-     * @var string $isValid
+     * @ORM\Column(name="salt", type="string", length=255)
      */
-    private $isValid;
+    private $salt;
 
     /**
-     * @return string
+     * @var bool
+     * @ORM\Column(name="enabled", type="boolean")
      */
-    public function getIsValid(): string
-    {
-        return $this->isValid;
-    }
+    private $enabled;
 
     /**
-     * @param string $isValid
+     * @var array
+     * @ORM\Column(name="roles", type="array")
      */
-    public function setIsValid(string $isValid): void
+    private $roles = array();
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Player", fetch="EAGER")
+     */
+    private $player;
+
+
+    public function __construct()
     {
-        $this->isValid = $isValid;
+        $this->roles = array();
     }
 
     /**
@@ -85,87 +68,179 @@ class User implements UserInterface
         return $this->id;
     }
 
-    // other properties and methods
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
-    public function setUsername($username)
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
     {
         $this->username = $username;
     }
 
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword($password)
-    {
-        $this->plainPassword = $password;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getPassword()
     {
         return $this->password;
     }
 
-    public function setPassword($password)
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSalt()
     {
-        // The bcrypt algorithm doesn't require a separate salt.
-        // You *may* need a real salt if you choose a different encoder.
-        return null;
+        return $this->salt;
     }
-
-    // other methods, including security methods like getRoles()
 
     /**
-     * Returns the roles granted to the user.
-     *
-     * @return  (Roles|string)[] The user roles
+     * @param mixed $salt
      */
-    public function getRoles()
+    public function setSalt($salt): void
     {
-
-        if (is_null($this->roles)) {
-            $this->roles = ['ROLE_USER'];
-        }
-
-       return [$this->roles];
+        $this->salt = $salt;
     }
 
-    public function setRoles(Roles $roles)
+    public function addRole($role)
     {
-        $this->roles = $roles;
+        $role = strtoupper($role);
+        if ($role === static::ROLE_DEFAULT) {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }
 
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
+    }
+
     /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
+     * {@inheritdoc}
      */
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    public function removeRole($role)
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = array();
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+
+        return $this;
+    }
+
+    // Les getters et setters
+
+
     public function eraseCredentials()
     {
-
     }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    // serialize and unserialize must be updated - see below
+    public function serialize()
+    {
+        return serialize([
+            $this->password,
+            $this->salt,
+            $this->username,
+            $this->enabled,
+            $this->id
+        ]);
+    }
+    public function unserialize($serialized)
+    {
+        list (
+            $this->password,
+            $this->salt,
+            $this->username,
+            $this->enabled,
+            $this->id,
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayer()
+    {
+        return $this->player;
+    }
+
+    /**
+     * @param Player $player
+     */
+    public function setPlayer(Player $player): void
+    {
+        $this->player = $player;
+    }
+
+
 }

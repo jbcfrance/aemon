@@ -13,16 +13,22 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    /*
-    public function findBySomething($value)
+    public function getUserPlayerId()
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.something = :value')->setParameter('value', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->_em->createQuery('
+            SELECT u,p
+            FROM App\Entity\User u
+            JOIN u.player p
+        ');
+
+        $return = [];
+
+        foreach($query->getResult() as $res) {
+            $return[] = $res->getPlayer()->getId();
+        }
+
+
+        return $return;
     }
-    */
+
 }

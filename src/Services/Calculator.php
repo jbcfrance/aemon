@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entity\Army;
 use App\Entity\Player;
+use App\Entity\PlayerHistory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -213,6 +214,52 @@ class Calculator
         }
 
         return ($army->getQuantity() * $army->getUnit()->getHealth());
+
+    }
+
+    /**
+     * Save calculated Data into the player profile
+     *
+     * @param EntityManagerInterface $entityManager
+     */
+    public function recordToPlayer(EntityManagerInterface $entityManager)
+    {
+
+        $now = new \DateTime('now');
+
+        $playerHistory = $entityManager->getRepository('App:PlayerHistory')->getLastPlayerHistory($this->player);
+
+        // If we don't find an history we initialize one
+        if( is_null($playerHistory)) {
+            $playerHistory = new PlayerHistory();
+        }
+
+        // We keep the found history only if it is more than an hour old
+        $timeDiff = $now->diff($playerHistory->getDate());
+
+        if ($timeDiff->d > 1) {
+            $playerHistory = new PlayerHistory();
+        }
+
+        $playerHistory->setPlayer($this->player);
+        $playerHistory->setTotalAttack($this->player->getTotalAttack());
+        $playerHistory->setTotalDefense($this->player->getTotalDefense());
+        $playerHistory->setTotalHealth($this->player->getTotalHealth());
+        $playerHistory->setTotalPower($this->player->getTotalPower());
+        $playerHistory->setTotalQuantity($this->player->getTotalQuantity());
+        $playerHistory->setDate($now);
+
+        $entityManager->persist($playerHistory);
+
+        $this->player->setTotalAttack($this->calculatedArmy['totalAttack']);
+        $this->player->setTotalDefense($this->calculatedArmy['totalDefense']);
+        $this->player->setTotalHealth($this->calculatedArmy['totalHealth']);
+        $this->player->setTotalPower($this->calculatedArmy['totalPower']);
+        $this->player->setTotalQuantity($this->calculatedArmy['totalQuantity']);
+
+        $entityManager->persist($this->player);
+        $entityManager->flush();
+
 
     }
 

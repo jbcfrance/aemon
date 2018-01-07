@@ -30,20 +30,43 @@ class CalculatorController extends Controller
     public function recording(EntityManagerInterface $entityManager, Request $request, Calculator $calculator)
     {
 
-
-
         $playerName = $request->get('player');
         $armyData = $request->get('army');
-
+        $origin = $request->get('origin');
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
         $link = uniqid(str_replace(' ','-',$playerName).'_'.date('Y-m-d').'_');
 
-        $player = new Player();
-        $player->setName($playerName);
-        $player->setLink($link);
-        $entityManager->persist($player);
+        if($origin === 'add_player') {
+            $player = new Player();
+            $player->setName($playerName);
+            $player->setLink($link);
+            $entityManager->persist($player);
+        }
+
+        if ($origin === 'update_army') {
+            $user = $this->getUser();
+
+            if (is_null($user)) {
+                $player = new Player();
+                $player->setName($playerName);
+                $player->setLink($link);
+                $entityManager->persist($player);
+            }else{
+                $player = $user->getPlayer();
+
+                $currentArmies = $player->getArmies();
+
+                foreach($currentArmies as $army) {
+                    $entityManager->remove($army);
+                }
+                $entityManager->flush();
+
+            }
+        }
+
+
 
         foreach ( $armyData as $unitId => $qty) {
             $unit = $entityManager->getRepository('App:Unit')->find($unitId);
@@ -87,6 +110,9 @@ class CalculatorController extends Controller
         try {
             $calculator->setPlayer($player);
             $calculator->compilation();
+            if ($origin === 'update_army') {
+                $calculator->recordToPlayer($entityManager);
+            }
         }catch ( Exception $exception) {
             return $this->redirectToRoute('homepage', ['flash'=>$exception->getMessage()]);
         }
@@ -123,7 +149,6 @@ class CalculatorController extends Controller
         if (is_null($player)) {
             return $this->redirectToRoute('homepage', ['flash'=>'Profile not found']);
         }
-
 
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 

@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
+use \DateTime;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PlayerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PlayerHistoryRepository")
  */
-class Player
+class PlayerHistory
 {
     /**
      * @ORM\Id
@@ -19,25 +18,15 @@ class Player
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="playerHistory")
      */
-    private $name;
+    protected $player;
 
     /**
-     * @ORM\Column(type="string", name="link")
+     * @var DateTime
+     * @ORM\Column(type="datetime", name="date")
      */
-    private $link;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Army", mappedBy="player", cascade={"persist", "remove"}, orphanRemoval=TRUE, fetch="EAGER")
-     */
-    protected $armies;
-
-    /**
-     * @ORM\Column(type="datetime", name="created")
-     */
-    protected $created;
-
+    protected $date;
     /**
      * @var int
      * @ORM\Column(type="decimal", precision=10, scale=2,  name="total_attack")
@@ -62,6 +51,8 @@ class Player
      */
     protected $totalPower = 0;
 
+
+
     /**
      * @var int
      * @ORM\Column(type="decimal", precision=10, scale=2, name="total_quantity")
@@ -69,23 +60,17 @@ class Player
     protected $totalQuantity = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PlayerHistory", mappedBy="player")
-     */
-    private $playerHistory;
-
-
-    /**
-     * Unit constructor.
+     * PlayerHistory constructor.
      *
      */
     public function __construct()
     {
-        $this->armies = new ArrayCollection();
-        $this->created = new DateTime();
+        $this->date = new DateTime();
     }
 
+
     /**
-     * @return integer
+     * @return mixed
      */
     public function getId()
     {
@@ -93,109 +78,35 @@ class Player
     }
 
     /**
-     * @param integer $id
+     * @return mixed
      */
-    public function setId($id)
+    public function getPlayer()
     {
-        $this->id = $id;
+        return $this->player;
     }
 
     /**
-     * @return string
+     * @param mixed $player
      */
-    public function getName()
+    public function setPlayer($player): void
     {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getArmies()
-    {
-        return $this->armies->toArray();
-    }
-
-    /**
-     * @param Army $army
-     *
-     * @return $this
-     */
-    public function addArmy(Army $army)
-    {
-        if (!$this->armies->contains($army)) {
-            $this->armies->add($army);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Army $army
-     *
-     * @return $this
-     */
-    public function removeArmy(Army $army)
-    {
-        if ($this->armies->contains($army)) {
-            $this->armies->removeElement($army);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getUnits()
-    {
-        return array_map(
-            function ($army) {
-                return $army->getUnits();
-            },
-            $this->armies->toArray()
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * @param string $link
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
+        $this->player = $player;
     }
 
     /**
      * @return DateTime
      */
-    public function getCreated()
+    public function getDate(): DateTime
     {
-        return $this->created;
+        return $this->date;
     }
 
     /**
-     * @param DateTime $created
+     * @param DateTime $date
      */
-    public function setCreated($created): void
+    public function setDate(DateTime $date): void
     {
-        $this->created = $created;
+        $this->date = $date;
     }
 
     /**
@@ -277,5 +188,9 @@ class Player
     {
         $this->totalQuantity = $totalQuantity;
     }
+
+
+
+
 
 }

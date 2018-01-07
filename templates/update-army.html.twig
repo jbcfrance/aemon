@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% set title = 'Aemon Calculator - Update Army' %}
+{% block body %}
+<section class="g-mb-100">
+  <div class="container">
+    <div class="row">
+      <!-- Profile Sidebar -->
+      {% include 'sidebar.html.twig' with {'active': 'updateArmy'}%}
+      <!-- End Profile Sidebar -->
+
+      <!-- Profile Content -->
+      <div class="col-lg-9">
+        <!-- Product Table Panel -->
+        <div class="card border-0">
+          <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+            <h3 class="h6 mb-0">
+                <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
+              </h3>
+          </div>
+          {% if flash is not null %}
+          <div class="alert alert-dismissible fade show g-bg-darkred g-color-white rounded-0" role="alert">
+            <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+            <div class="media">
+              <span class="d-flex g-mr-10 g-mt-5">
+                <i class="icon-ban g-font-size-25"></i>
+              </span>
+              <span class="media-body align-self-center">
+                <strong>Error!</strong> {{ flash }}
+              </span>
+            </div>
+          </div>
+          {% endif %}
+          <div class="card-block g-pa-0">
+            <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
+              <input type="hidden" name="origin" value="update_army" />
+              <div class="table-responsive">
+                <table class="table table-striped ">
+                  <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
+                  <thead>
+                  <tr>
+                    <th class="g-font-size-18">Level</th>
+                  {% for type in unitTypes %}
+                    <th class="text-center g-font-size-18 ">{{ type }}</th>
+                  {% endfor%}
+                    <th class="g-font-size-18">Level</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for level,units in unitsByType %}
+                  <tr class="g-pa-0 g-ma-0">
+                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
+                {% for unit in units %}
+                  <td class="g-pa-0 g-ma-0">
+                    <input
+                        name="army[{{ unit.id }}]"
+                        id="unit_{{ unit.id }}"
+                        class="form-control form-control-xs no-margin"
+                        type="text"
+                        placeholder=""
+                        {% if playerArmyQuantityByUnit[unit.id] is defined %}
+                          value="{{ playerArmyQuantityByUnit[unit.id] }}"
+                        {% endif %}
+                    >
+                  </td>
+                {% endfor %}
+                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+              <input type="submit" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Calculer"/>
+              <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Remettre à zéro"/>
+            </form>
+          </div>
+        </div>
+        <!-- End Product Table Panel -->
+      </div>
+      <!-- End Profile Content -->
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -26,7 +26,7 @@ class Army
     protected $player;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Unit", inversedBy="armies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit", inversedBy="armies", fetch="EAGER")
      * @ORM\JoinColumn(name="unit_id", referencedColumnName="id", nullable=FALSE)
      */
     protected $unit;
@@ -118,6 +118,7 @@ class Army
             $army->setUnit(null);
         }
     }
+
 
 
 

@@ -10,13 +10,26 @@
               <h2 class="h2 g-color-black g-font-weight-600">Login</h2>
             </header>
             {% if error %}
-              <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+              <div class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0" role="alert">
+                <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+
+                <div class="media">
+                  <span class="d-flex g-mr-10 g-mt-5">
+                    <i class="icon-ban g-font-size-25"></i>
+                  </span>
+                            <span class="media-body align-self-center">
+                    <strong>Login Error : </strong> {{ error.message }}
+                  </span>
+                </div>
+              </div>
             {% endif %}
             <!-- Form -->
-            <form class="g-py-15" action="{{ path('login') }}"  method="post">
+            <form class="g-py-15" action="{{ path('login_check') }}"  method="post">
               <div class="mb-4">
                 <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Username:</label>
-                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15" type="text" name="_username"  value="{{ last_username }}" placeholder="johndoe@gmail.com">
+                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-darkred--hover rounded g-py-15 g-px-15" type="text" name="_username"  value="{{ last_username }}" placeholder="Nom d'utilisateur">
               </div>
 
               <div class="g-mb-35">
@@ -28,7 +41,7 @@
                     <a class="d-inline-block g-font-size-12 mb-2" href="#!">Forgot password?</a>
                   </div>
                 </div>
-                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15 mb-3" type="password" name="_password" placeholder="Password">
+                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-darkred--hover rounded g-py-15 g-px-15 mb-3" type="password" name="_password" placeholder="Password">
                 <div class="row justify-content-between">
                   <div class="col-8 align-self-center">
                     <label class="form-check-inline u-check g-color-gray-dark-v5 g-font-size-13 g-pl-25 mb-0">
@@ -39,9 +52,9 @@
                       Keep signed in
                     </label>
                   </div>
-                  <input type="hidden" name="_target_path" value="/profile" />
+                  <input type="hidden" name="_target_path" value="/" />
                   <div class="col-4 align-self-center text-right">
-                    <input type="submit" class="btn btn-md u-btn-primary rounded g-py-13 g-px-25" value="Login" />
+                    <input type="submit" class="btn btn-md u-btn-darkred rounded g-py-13 g-px-25" value="Login" />
                   </div>
                 </div>
               </div>
@@ -49,7 +62,7 @@
             <!-- End Form -->
 
             <footer class="text-center">
-              <p class="g-color-gray-dark-v5 g-font-size-13 mb-0">Don't have an account? <a class="g-font-weight-600" href="page-signup-1.html">signup</a>
+              <p class="g-color-gray-dark-v5 g-font-size-13 mb-0">Don't have an account? <a class="g-font-weight-600" href="{{ path('register') }}">signup</a>
               </p>
             </footer>
           </div>

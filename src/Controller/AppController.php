@@ -3,28 +3,74 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\UserType;
+use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AppController extends Controller
 {
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/", name="homepage")
      * @param EntityManagerInterface $entityManager
      *
+     * @return Response
+     */
+    public function index(EntityManagerInterface $entityManager)
+    {
+
+        $user = $this->getUser();
+
+        if (is_null($user)) {
+            $this->redirectToRoute('login');
+        }
+
+        $userPlayer = $user->getPlayer();
+
+        if(is_null($userPlayer)){
+            return $this->render(
+                'index.html.twig',
+                [
+                    'lastWeek' => null,
+                    'lastMonth' => null
+                ]
+            );
+
+        }
+
+        $playerLastWeek = $entityManager->getRepository('App:PlayerHistory')->getLastWeek($user->getPlayer());
+        $playerLastMonth = $entityManager->getRepository('App:PlayerHistory')->getLastMonth($user->getPlayer());
+
+        return $this->render(
+            'index.html.twig',
+            [
+                'lastWeek' => $playerLastWeek[0],
+                'lastMonth' => $playerLastMonth[0]
+            ]
+        );
+    }
+
+    /**
+     * Calculator entry for a profile that is not the user's one.
+     *
+     * @Security("has_role('ROLE_USER')")
+     * @Route("/addPlayer", name="add_player")
+     * @param EntityManagerInterface $entityManager
      * @param Request                $request
      *
      * @return Response
      */
-    public function index(EntityManagerInterface $entityManager, Request $request)
+    public function addPlayer(EntityManagerInterface $entityManager, Request $request)
     {
+        $user = $this->getUser();
+
+        if (null === $user) {
+            $this->redirectToRoute('login');
+        }
         // Get all units
         $units = $entityManager->getRepository('App:Unit')->getAllUnitsByType();
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
@@ -33,7 +79,7 @@ class AppController extends Controller
 
 
         return $this->render(
-            'index.html.twig',
+            'add-player.html.twig',
             [
                 'unitsByType'=>$units,
                 'unitTypes'=>$unitTypes,
@@ -43,125 +89,94 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/profile", name="user_profile")
-     * @param EntityManagerInterface $entityManager
      *
+     * Calculator entry for a logged user's army update
+     *
+     * @Security("has_role('ROLE_USER')")
+     * @Route("/updateArmy", name="update_army")
+     * @param EntityManagerInterface $entityManager
      * @param Request                $request
      *
      * @return Response
      */
-    public function profileAction(EntityManagerInterface $entityManager, Request $request)
+    public function updateArmy(EntityManagerInterface $entityManager, Request $request)
     {
-        // Get all units
-        $security = $this->get('security.token_storage');
+        $user = $this->getUser();
 
-        // On récupère le token
-        $token = $security->getToken();
-
-        // Sinon, on récupère l'utilisateur
-        $user = $token->getUser();
-
-        // Si l'utilisateur courant est anonyme, $user vaut « anon. »
         if (null === $user) {
-            return $this->redirectToRoute('login');
-        } else {
-            $user->getUsername();
+            $this->redirectToRoute('login');
         }
+
+        // We try to get the user's Player profile
+        $userPlayer = $user->getPlayer();
+
+        if(is_null($userPlayer)) {
+            $userPlayer = new Player();
+        }
+
+        $playerArmyQuantityByUnit = $entityManager->getRepository('App:Unit')->getArmyQuantityByUnit($userPlayer);
+
+        // Get all units
+        $units = $entityManager->getRepository('App:Unit')->getAllUnitsByType();
+        $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
+
+        $flash = $request->get('flash', null);
 
 
         return $this->render(
-            'profile.html.twig',
+            'update-army.html.twig',
             [
-                'user' => $user
+                'unitsByType' => $units,
+                'unitTypes' => $unitTypes,
+                'playerArmyQuantityByUnit' => $playerArmyQuantityByUnit,
+                'flash' => $flash
             ]
         );
     }
 
-
     /**
-     * @Route("/login", name="login")
-     * @param Request             $request
-     * @param AuthenticationUtils $authUtils
+     *
+     * Currently listing all the player profile but at the end will list only the current user's player profil
+     *
+     * @Route("/listPlayer", name="list_player")
+     * @Security("has_role('ROLE_USER')")
+     * @param EntityManagerInterface $entityManager
      *
      * @return Response
      */
-    public function loginAction(Request $request, AuthenticationUtils $authUtils)
-    {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('homepage');
-        }
-
-        $authenticationUtils = $this->get('security.authentication_utils');
-
-        return $this->render('login.html.twig', array(
-            'last_username' => $authenticationUtils->getLastUsername(),
-            'error'         => $authenticationUtils->getLastAuthenticationError(),
-        ));
-    }
-
-    /**
-     * @Route("/login_check", name="login_check")
-     */
-    public function checkLogin()
-    {
-        $security = $this->get('security.token_storage');
-
-        // On récupère le token
-        $token = $security->getToken();
-
-        // Sinon, on récupère l'utilisateur
-        $user = $token->getUser();
-
-        // Si l'utilisateur courant est anonyme, $user vaut « anon. »
-        if (null === $user) {
-            return $this->redirectToRoute('login');
-        } else {
-            $user->getUsername();
-        }
-
-
-    }
-    /**
-     *
-     * @Route("/logout", name="logout")
-     * @param EntityManagerInterface $entityManager
-     */
-    public function logout(EntityManagerInterface $entityManager)
+    public function listPlayer(EntityManagerInterface $entityManager)
     {
 
-    }
+        $players = $entityManager->getRepository('App:Player')->findAll();
 
+        $usersPlayer = $entityManager->getRepository('App:User')->getUserPlayerId();
 
-    /**
-     *
-     * @Route("/register", name="register")
-     * @param Request                      $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-
-            return $this->redirectToRoute('login');
-        }
 
         return $this->render(
-            'register.html.twig',
-            array('form' => $form->createView())
+            'list-player.html.twig',
+            ['players' => $players,
+                'userPlayer' => $usersPlayer]
+        );
+    }
+
+    /**
+     *
+     * User setting method @todo
+     *
+     * @Route("/userConfig", name="user_config")
+     * @Security("has_role('ROLE_USER')")
+     * @param EntityManagerInterface $entityManager
+     * @param Request                $request
+     *
+     * @return Response
+     */
+    public function userConfig(EntityManagerInterface $entityManager, Request $request)
+    {
+
+
+        return $this->render(
+            'settings.html.twig',
+            []
         );
     }
 
