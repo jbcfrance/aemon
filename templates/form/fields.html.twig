@@ -1,0 +1,30 @@
+{%- block form_row -%}
+  <div class="row">
+    {{- form_label(form) -}}
+    {{- form_errors(form) -}}
+    {{- form_widget(form) -}}
+  </div>
+{%- endblock form_row -%}
+
+{%- block form_widget_simple -%}
+  {%- set type = type|default('text') -%}
+  <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{%- block button_row -%}
+  <div class="row justify-content-between mb-5">
+    <div class="col-4 align-self-center text-right">
+      {{- form_widget(form) -}}
+    </div>
+  </div>
+{%- endblock button_row -%}
+
+{%- block submit_widget -%}
+  {%- set type = type|default('submit') -%}
+  {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
+{%- block password_widget -%}
+  {%- set type = type|default('password') -%}
+  {{ block('form_widget_simple') }}
+{%- endblock password_widget -%}

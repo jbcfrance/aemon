@@ -36,7 +36,8 @@ $g-color-main: #555 !default;
 $g-bg-color-main: #fff !default;
 
 // Primary Color
-$g-color-primary: #72c02c !default;
+//$g-color-primary: #72c02c !default;
+$g-color-primary: #e64b3b !default;
 $g-color-primary-dark-v1: darken($g-color-primary, 2%) !default;
 $g-color-primary-dark-v2: darken($g-color-primary, 5%) !default;
 $g-color-primary-dark-v3: darken($g-color-primary, 10%) !default;

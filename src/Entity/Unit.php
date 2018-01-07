@@ -53,7 +53,7 @@ class Unit
     private $speed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UnitType", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\UnitType", cascade={"persist"}, fetch="EAGER")
      * @ORM\JoinColumn(name="unit_type", referencedColumnName="id")
      */
     private $type;

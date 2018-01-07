@@ -1,93 +1,328 @@
 {% extends 'base.html.twig' %}
-{% set title = 'Aemon calculator' %}
+{% set title %}Aemon profiles - {{ app.user.username }}{% endset %}
 {% block body %}
-<section class="g-mb-100">
-  <div class="container">
-    <div class="row">
-      <!-- Profile Sidebar -->
-      <div class="col-lg-3 g-mb-50 g-mb-0--lg">
+        <section class="g-mb-100">
+            <div class="container">
+                <div class="row">
+                    <!-- Profile Sidebar -->
+                    {% include 'sidebar.html.twig' with {'active' : 'index'} %}
+                    <!-- End Profile Sidebar -->
 
-        <!-- Sidebar Navigation -->
-        <div class="list-group list-group-border-0 g-mb-40">
-          <!-- Overall -->
-          <a href="{{ path('homepage') }}" class="list-group-item justify-content-between active g-bg-darkred">
-            <span><i class="icon-home g-pos-rel g-top-1 g-mr-8"></i> Calculateur</span>
-            {#<span class="u-label g-font-size-11 g-bg-white g-color-main g-rounded-20 g-px-10">2</span>#}
-          </a>
-          <!-- End Overall -->
-        </div>
-        <!-- End Sidebar Navigation -->
+                    <!-- Profile Content -->
+                    {% if lastWeek is not null and lastMonth is not null %}
+                    <div class="col-lg-9">
+                        <!-- Overall Statistics -->
+                        <div class="row g-mb-40">
+                            <div class="col-md-6 g-mb-30 g-mb-0--md">
+                                <div class="g-bg-red g-color-white g-pa-25">
+                                    <header class="d-flex text-uppercase g-mb-40">
+                                        <i class="icon-people align-self-center display-4 g-mr-20"></i>
 
-      </div>
-      <!-- End Profile Sidebar -->
+                                        <div class="g-line-height-1">
+                                            <h4 class="h5">Total Attack</h4>
+                                            <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalAttack }}</div>
+                                        </div>
+                                    </header>
 
-      <!-- Profile Content -->
-      <div class="col-lg-9">
-        <!-- Product Table Panel -->
-        <div class="card border-0">
-          <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-            <h3 class="h6 mb-0">
-                <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
-              </h3>
-          </div>
-          {% if flash is not null %}
-          <div class="alert alert-dismissible fade show g-bg-darkred g-color-white rounded-0" role="alert">
-            <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-            <div class="media">
-              <span class="d-flex g-mr-10 g-mt-5">
-                <i class="icon-ban g-font-size-25"></i>
-              </span>
-              <span class="media-body align-self-center">
-                <strong>Error!</strong> {{ flash }}
-              </span>
+                                    <div class="d-flex justify-content-between text-uppercase g-mb-25">
+                                        <div class="g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalAttack }}</div>
+                                        </div>
+
+                                        <div class="text-right g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalAttack }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="g-bg-brown g-color-white g-pa-25">
+                                    <header class="d-flex text-uppercase g-mb-40">
+                                        <i class="icon-layers align-self-center display-4 g-mr-20"></i>
+
+                                        <div class="g-line-height-1">
+                                            <h4 class="h5">Total Defense</h4>
+                                            <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalDefense }}</div>
+                                        </div>
+                                    </header>
+
+                                    <div class="d-flex justify-content-between text-uppercase g-mb-25">
+                                        <div class="g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalDefense }}</div>
+                                        </div>
+
+                                        <div class="text-right g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalDefense }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-mb-40">
+                            <div class="col-md-6 g-mb-30 g-mb-0--md">
+                                <div class="g-bg-green g-color-white g-pa-25">
+                                    <header class="d-flex text-uppercase g-mb-40">
+                                        <i class="icon-people align-self-center display-4 g-mr-20"></i>
+
+                                        <div class="g-line-height-1">
+                                            <h4 class="h5">Total Health</h4>
+                                            <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalHealth }}</div>
+                                        </div>
+                                    </header>
+
+                                    <div class="d-flex justify-content-between text-uppercase g-mb-25">
+                                        <div class="g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalHealth }}</div>
+                                        </div>
+
+                                        <div class="text-right g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalHealth }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="g-bg-darkred g-color-white g-pa-25">
+                                    <header class="d-flex text-uppercase g-mb-40">
+                                        <i class="icon-layers align-self-center display-4 g-mr-20"></i>
+
+                                        <div class="g-line-height-1">
+                                            <h4 class="h5">Total Power</h4>
+                                            <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalPower }}</div>
+                                        </div>
+                                    </header>
+
+                                    <div class="d-flex justify-content-between text-uppercase g-mb-25">
+                                        <div class="g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalPower }}</div>
+                                        </div>
+
+                                        <div class="text-right g-line-height-1">
+                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalPower }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- End Overall Statistics -->
+
+                        <!-- Product Table Panel -->
+                        {#<div class="card border-0">
+                            <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+                                <h3 class="h6 mb-0">
+                                    <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Product Table
+                                </h3>
+                                <div class="dropdown g-mb-10 g-mb-0--md">
+                  <span class="d-block g-color-darkred--hover g-cursor-pointer g-mr-minus-5 g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="icon-options-vertical g-pos-rel g-top-1"></i>
+                    </span>
+                                    <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
+                                        <a class="dropdown-item g-px-10" href="#!">
+                                            <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Projects
+                                        </a>
+                                        <a class="dropdown-item g-px-10" href="#!">
+                                            <i class="icon-wallet g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Wallets
+                                        </a>
+                                        <a class="dropdown-item g-px-10" href="#!">
+                                            <i class="icon-fire g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Reports
+                                        </a>
+                                        <a class="dropdown-item g-px-10" href="#!">
+                                            <i class="icon-settings g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Users Setting
+                                        </a>
+
+                                        <div class="dropdown-divider"></div>
+
+                                        <a class="dropdown-item g-px-10" href="#!">
+                                            <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> View More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block g-pa-0">
+                                <!-- Product Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-bordered u-table--v2">
+                                        <thead class="text-uppercase g-letter-spacing-1">
+                                        <tr>
+                                            <th class="g-font-weight-300 g-color-black">Product Name</th>
+                                            <th class="g-font-weight-300 g-color-black g-min-width-200">Locations</th>
+                                            <th class="g-font-weight-300 g-color-black">Status</th>
+                                            <th class="g-font-weight-300 g-color-black">Contacts</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr>
+                                            <td class="align-middle text-nowrap">
+                                                <h4 class="h6 g-mb-2">Lenovo Group</h4>
+                                                <div class="js-rating g-font-size-12 g-color-darkred" data-rating="3.5"></div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex">
+                                                    <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
+                                                    <span>389ZA2 DeClaudine, CA, USA</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-block u-btn-darkred g-rounded-50 g-py-5" href="#!">
+                                                    <i class="fa fa-arrows-v g-mr-5"></i> Middle
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-nowrap">
+                          <span class="d-block g-mb-5">
+                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 4768 97655
+                          </span>
+                                                <span class="d-block">
+                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> contact@lenovo.com
+                          </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle text-nowrap">
+                                                <h4 class="h6 g-mb-2">Samsung Electronics</h4>
+                                                <div class="js-rating g-font-size-12 g-color-darkred" data-rating="4.5"></div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex">
+                                                    <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
+                                                    <span>738AD Lorena Spur, London, UK</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-block u-btn-pink g-rounded-50 g-py-5" href="#!">
+                                                    <i class="fa fa-level-up g-mr-5"></i> High
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-nowrap">
+                          <span class="d-block g-mb-5">
+                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +44 7689 7655
+                          </span>
+                                                <span class="d-block">
+                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> users@samsung.com
+                          </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle text-nowrap">
+                                                <h4 class="h6 g-mb-2">Sony Corp.</h4>
+                                                <div class="js-rating g-font-size-12 g-color-darkred" data-rating="2"></div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex">
+                                                    <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
+                                                    <span>044C1 Port Dickson, BC, Canada</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-block u-btn-cyan g-rounded-50 g-py-5" href="#!">
+                                                    <i class="fa fa-sort-amount-desc g-mr-5"></i> Deep
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-nowrap">
+                          <span class="d-block g-mb-5">
+                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 0739 3644
+                          </span>
+                                                <span class="d-block">
+                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> clients@sony.com
+                          </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle text-nowrap">
+                                                <h4 class="h6 g-mb-2">Apple Inc.</h4>
+                                                <div class="js-rating g-font-size-12 g-color-darkred" data-rating="5"></div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex">
+                                                    <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
+                                                    <span>07W2 Donell Lodge, NY, USA</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-block u-btn-purple g-rounded-50 g-py-5" href="#!">
+                                                    <i class="fa fa-level-down g-mr-5"></i> Down
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-nowrap">
+                          <span class="d-block g-mb-5">
+                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +1 6589-96451
+                          </span>
+                                                <span class="d-block">
+                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> mail@appple.com
+                          </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle text-nowrap">
+                                                <h4 class="h6 g-mb-2">Dell Corporation</h4>
+                                                <div class="js-rating g-font-size-12 g-color-darkred" data-rating="4"></div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex">
+                                                    <i class="icon-location-pin g-font-size-18 g-color-gray-dark-v5 g-pos-rel g-top-5 g-mr-7"></i>
+                                                    <span>1A9WA4 Wanderben, Berlin, Germany</span>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a class="btn btn-block u-btn-deeporange g-rounded-50 g-py-5" href="#!">
+                                                    <i class="fa fa-bolt g-mr-5"></i> Stabile
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-nowrap">
+                          <span class="d-block g-mb-5">
+                            <i class="icon-phone g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> +49 3868 4792
+                          </span>
+                                                <span class="d-block">
+                            <i class="icon-envelope g-font-size-16 g-color-gray-dark-v5 g-pos-rel g-top-2 g-mr-5"></i> clients@dell.com
+                          </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- End Product Table -->
+                            </div>
+                        </div>#}
+                        <!-- End Product Table Panel -->
+                    </div>
+                    {% else %}
+                        <div class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                            <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+
+                            <div class="media">
+                                <span class="d-flex g-mr-10 g-mt-5">
+                                  <i class="icon-check g-font-size-25"></i>
+                                </span>
+                                <span class="media-body align-self-center">
+                                  <strong>Vous êtes connecté</strong>  Vous devez renseigner votre armée en allant sur "Votre Armée"
+                                </span>
+                            </div>
+                        </div>
+                        <p></p>
+                    {% endif %}
+                    <!-- End Profile Content -->
+                </div>
             </div>
-          </div>
-          {% endif %}
-          <div class="card-block g-pa-0">
-            <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
-              <div class="form-group g-mb-20">
-                <label class="g-mb-10" for="inputGroup1_1">Votre pseudo</label>
-                <input id="inputGroup1_1" name="player" required class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
-                <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-striped ">
-                  <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
-                  <thead>
-                  <tr>
-                    <th class="g-font-size-18">Level</th>
-                  {% for type in unitTypes %}
-                    <th class="text-center g-font-size-18 ">{{ type }}</th>
-                  {% endfor%}
-                    <th class="g-font-size-18">Level</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                {% for level,units in unitsByType %}
-                  <tr class="g-pa-0 g-ma-0">
-                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
-                {% for unit in units %}
-                  <td class="g-pa-0 g-ma-0">
-                    <input name="army[{{ unit.id }}]" id="unit_{{ unit.id }}" class="form-control form-control-xs no-margin" type="text" placeholder="">
-                  </td>
-                {% endfor %}
-                    <th class="g-pa-0 g-ma-0 g-font-size-18 text-center">{{ level }}</th>
-                  </tr>
-                {% endfor %}
-                  </tbody>
-              </table>
-              </div>
-              <input type="submit" class="btn btn-md u-btn-3d u-btn-primary g-mr-10 g-mb-15" value="Calculer"/>
-              <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Remettre à zéro"/>
-            </form>
-          </div>
-        </div>
-        <!-- End Product Table Panel -->
-      </div>
-      <!-- End Profile Content -->
-    </div>
-  </div>
-</section>
+        </section>
 {% endblock %}

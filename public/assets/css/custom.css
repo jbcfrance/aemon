@@ -1,1 +1,7 @@
 /* Add here all your css styles (customizations) */
+
+.g-bg-primary {
+    background-color: #72c02c !important; }
+
+.g-bg-primary--hover:hover {
+    background-color: #72c02c !important; }

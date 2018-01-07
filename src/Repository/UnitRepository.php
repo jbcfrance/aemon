@@ -2,18 +2,29 @@
 
 namespace App\Repository;
 
+use App\Entity\Army;
+use App\Entity\Player;
 use App\Entity\Unit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class UnitRepository extends ServiceEntityRepository
 {
+    /**
+     * UnitRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Unit::class);
     }
 
 
+    /**
+     * Getting all the units regrouped by type
+     * @return array
+     */
     public function getAllUnitsByType()
     {
         $qb = $this->createQueryBuilder('u')
@@ -35,16 +46,22 @@ class UnitRepository extends ServiceEntityRepository
         return $return;
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * Building an array of quantity with the unit.id in key
+     * @param Player $player
+     *
+     * @return array
+     */
+    public function getArmyQuantityByUnit(Player $player)
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.something = :value')->setParameter('value', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        //Initialize
+        $returnArray = [];
+
+        foreach ($player->getArmies() as $army) {
+            $returnArray[$army->getUnit()->getId()] = $army->getQuantity();
+        }
+
+        return $returnArray;
     }
-    */
+
 }

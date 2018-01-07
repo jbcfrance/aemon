@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\UnitType;
+use App\Entity\Roles;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class UnitTypeRepository extends ServiceEntityRepository
+class RolesRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, UnitType::class);
+        parent::__construct($registry, Roles::class);
     }
 
 }
