@@ -15,6 +15,6 @@
     "php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml"
   ],
   "group": "stable",
-  "dist": "precise",
+  "dist": "trusty",
   "os": "linux"
 }
