@@ -18,7 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CalculatorController extends Controller
 {
     /**
-     * @Route("/calcule", name="calcule")
+     * @Route("/calcule/{_locale}", name="calcule", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @param EntityManagerInterface $entityManager
      *
      * @param Request                $request
@@ -37,25 +39,33 @@ class CalculatorController extends Controller
         $unitTypes = $entityManager->getRepository('App:UnitType')->findAll();
 
         $link = uniqid(str_replace(' ','-',$playerName).'_'.date('Y-m-d').'_');
+        $user = $this->getUser();
+        $player = new Player();
+
+
 
         if($origin === 'add_player') {
-            $player = new Player();
+            $link = uniqid(str_replace(' ','-',$playerName).'_'.date('Y-m-d').'_');
             $player->setName($playerName);
             $player->setLink($link);
             $entityManager->persist($player);
         }
 
         if ($origin === 'update_army') {
-            $user = $this->getUser();
-
+            $link = uniqid(str_replace(' ','-',$user->getUsername()).'_'.date('Y-m-d').'_');
             if (is_null($user)) {
-                $player = new Player();
                 $player->setName($playerName);
                 $player->setLink($link);
                 $entityManager->persist($player);
             }else{
                 $player = $user->getPlayer();
 
+                if(is_null($player)){
+                    $player = new Player();
+                    $player->setName($user->getUsername());
+                    $player->setLink($link);
+                    $entityManager->persist($player);
+                }
                 $currentArmies = $player->getArmies();
 
                 foreach($currentArmies as $army) {
@@ -97,10 +107,16 @@ class CalculatorController extends Controller
             $army->setUnit($unit);
             $army->setQuantity($qty);
             $entityManager->persist($army);
+
             $entityManager->flush();
             unset($army);
 
         }
+        if ($origin === 'update_army') {
+            $user->setPlayer($player);
+            $entityManager->persist($user);
+        }
+
 
         $entityManager->flush();
 
@@ -129,7 +145,9 @@ class CalculatorController extends Controller
     }
 
     /**
-     * @Route("/calcule/{link}" , name="calcul_link")
+     * @Route("/calcule/{link}/{_locale}" , name="calcul_link", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      *
      * @param                        $link
      * @param EntityManagerInterface $entityManager

@@ -1,0 +1,32 @@
+home.logo: 'Aemon Team'
+profile.title: 'Aemon Profile'
+sidebar.calculator: Calculator
+sidebar.army: 'Your Army'
+sidebar.player: 'Player list'
+sidebar.admin: Administration
+sidebar.logout: Logout
+profile.totalattack: 'Total Attack'
+profile.lastweek: 'Last Week'
+profile.lastmonth: 'Last Month'
+profile.totaldefense: 'Total Defense'
+profile.totalhealth: 'Total Health'
+profile.totalpower: 'Total Power'
+profile.connection_success: 'You are connected !'
+profile.army_not_found: 'No army found, please record it'
+army.title: 'Your Army'
+army.pseudo: "Player‘s pseudo"
+army.pseudo.placeholder: Pseudo
+army.pseudo.help: 'Put a name to this profile to find it again'
+army.caption: 'Enter your quantity of troop by type and level'
+army.level: Level
+army.submit: Calculate
+army.reset: Reset
+calcule.title: Results
+calcule.link_label: 'Use this link to find those result again directly'
+calcule.header.attack: Attack
+calcule.header.defense: Defense
+calcule.header.power: Power
+calcule.header.health: Health
+calcule.header.quantity: Quantity
+calcule.header.total: Total
+calcule.back_home: 'Back to home'

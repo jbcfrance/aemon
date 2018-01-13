@@ -1,0 +1,32 @@
+home.logo: 'Equipe Aemon'
+profile.title: 'Aemon Fiche'
+sidebar.calculator: Calculateur
+sidebar.army: 'Votre armée'
+sidebar.player: 'Liste des joueurs'
+sidebar.admin: Administration
+sidebar.logout: 'Se deconnecter'
+profile.totalattack: 'Attaque total'
+profile.lastweek: 'Semaine prcédente'
+profile.lastmonth: 'Mois précédent'
+profile.totaldefense: 'Défense totale'
+profile.totalhealth: 'Santé totale'
+profile.totalpower: 'Puissance totale'
+profile.connection_success: 'Vous êtes connecté !'
+profile.army_not_found: 'Vous devez renseigner votre armée en allant sur "Votre Armée"'
+army.title: 'Saisir votre armée'
+army.pseudo: Pseudo
+army.pseudo.placeholder: Pseudo
+army.pseudo.help: 'Le nom est purement indicatif pour le moment.'
+army.caption: 'Saisissez vos quantité d''unité en fonction du level et du type'
+army.level: Niveau
+army.submit: 'Lancer le calcule'
+army.reset: 'Remettre à zero'
+calcule.title: 'Votre Resultat'
+calcule.link_label: 'Pour retrouver ce resultat, utilisez le lien suivant :'
+calcule.header.attack: Attaque
+calcule.header.defense: Défense
+calcule.header.power: Puissance
+calcule.header.health: Santé
+calcule.header.quantity: Quantité
+calcule.header.total: Total
+calcule.back_home: 'Retour à l''accueil'

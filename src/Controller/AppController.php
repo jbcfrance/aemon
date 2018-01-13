@@ -15,7 +15,9 @@ class AppController extends Controller
 {
     /**
      * @Security("has_role('ROLE_USER')")
-     * @Route("/", name="homepage")
+     * @Route("/{_locale}", name="homepage", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @param EntityManagerInterface $entityManager
      *
      * @return Response
@@ -48,8 +50,8 @@ class AppController extends Controller
         return $this->render(
             'index.html.twig',
             [
-                'lastWeek' => $playerLastWeek[0],
-                'lastMonth' => $playerLastMonth[0]
+                'lastWeek' => isset($playerLastWeek[0]) ? $playerLastWeek[0] : null,
+                'lastMonth' => isset($playerLastMonth[0]) ? $playerLastMonth[0] :null
             ]
         );
     }
@@ -58,7 +60,9 @@ class AppController extends Controller
      * Calculator entry for a profile that is not the user's one.
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/addPlayer", name="add_player")
+     * @Route("/addPlayer/{_locale}", name="add_player", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @param EntityManagerInterface $entityManager
      * @param Request                $request
      *
@@ -93,7 +97,9 @@ class AppController extends Controller
      * Calculator entry for a logged user's army update
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/updateArmy", name="update_army")
+     * @Route("/updateArmy/{_locale}", name="update_army", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @param EntityManagerInterface $entityManager
      * @param Request                $request
      *
@@ -138,7 +144,9 @@ class AppController extends Controller
      *
      * Currently listing all the player profile but at the end will list only the current user's player profil
      *
-     * @Route("/listPlayer", name="list_player")
+     * @Route("/listPlayer/{_locale}", name="list_player", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @Security("has_role('ROLE_USER')")
      * @param EntityManagerInterface $entityManager
      *
@@ -163,7 +171,9 @@ class AppController extends Controller
      *
      * User setting method @todo
      *
-     * @Route("/userConfig", name="user_config")
+     * @Route("/userConfig/{_locale}", name="user_config", defaults={"_locale"="fr"}, requirements={
+     *     "_locale"="en|fr"
+     * })
      * @Security("has_role('ROLE_USER')")
      * @param EntityManagerInterface $entityManager
      * @param Request                $request

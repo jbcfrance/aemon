@@ -28,3 +28,8 @@ services:
     # please note that last definitions always *replace* previous ones
     App\DataFixtures\ORM\LoadUser:
             tags: [doctrine.fixture.orm]
+
+    App\EventSubscriber\LocaleSubscriber:
+            arguments: ['%kernel.default_locale%']
+            # uncomment the next line if you are not using autoconfigure
+            # tags: [kernel.event_subscriber]

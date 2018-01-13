@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% set title %}Aemon profiles - {{ app.user.username }}{% endset %}
+{% set title %}{{ 'profile.title'|trans({},'messages') }} - {{ app.user.username }}{% endset %}
 {% block body %}
         <section class="g-mb-100">
             <div class="container">
@@ -19,19 +19,19 @@
                                         <i class="icon-people align-self-center display-4 g-mr-20"></i>
 
                                         <div class="g-line-height-1">
-                                            <h4 class="h5">Total Attack</h4>
+                                            <h4 class="h5">{{ 'profile.totalattack'|trans({},'messages') }}</h4>
                                             <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalAttack }}</div>
                                         </div>
                                     </header>
 
                                     <div class="d-flex justify-content-between text-uppercase g-mb-25">
                                         <div class="g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastweek'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalAttack }}</div>
                                         </div>
 
                                         <div class="text-right g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastmonth'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalAttack }}</div>
                                         </div>
                                     </div>
@@ -45,19 +45,19 @@
                                         <i class="icon-layers align-self-center display-4 g-mr-20"></i>
 
                                         <div class="g-line-height-1">
-                                            <h4 class="h5">Total Defense</h4>
+                                            <h4 class="h5">{{ 'profile.totaldefense'|trans({},'messages') }}</h4>
                                             <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalDefense }}</div>
                                         </div>
                                     </header>
 
                                     <div class="d-flex justify-content-between text-uppercase g-mb-25">
                                         <div class="g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastweek'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalDefense }}</div>
                                         </div>
 
                                         <div class="text-right g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastmonth'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalDefense }}</div>
                                         </div>
                                     </div>
@@ -72,19 +72,19 @@
                                         <i class="icon-people align-self-center display-4 g-mr-20"></i>
 
                                         <div class="g-line-height-1">
-                                            <h4 class="h5">Total Health</h4>
+                                            <h4 class="h5">{{ 'profile.totalhealth'|trans({},'messages') }}</h4>
                                             <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalHealth }}</div>
                                         </div>
                                     </header>
 
                                     <div class="d-flex justify-content-between text-uppercase g-mb-25">
                                         <div class="g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastweek'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalHealth }}</div>
                                         </div>
 
                                         <div class="text-right g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastmonth'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalHealth }}</div>
                                         </div>
                                     </div>
@@ -97,19 +97,19 @@
                                         <i class="icon-layers align-self-center display-4 g-mr-20"></i>
 
                                         <div class="g-line-height-1">
-                                            <h4 class="h5">Total Power</h4>
+                                            <h4 class="h5">{{ 'profile.totalpower'|trans({},'messages') }}</h4>
                                             <div class="js-counter g-font-size-30" data-comma-separated="true">{{ app.user.player.totalPower }}</div>
                                         </div>
                                     </header>
 
                                     <div class="d-flex justify-content-between text-uppercase g-mb-25">
                                         <div class="g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Week</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastweek'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastWeek.totalPower }}</div>
                                         </div>
 
                                         <div class="text-right g-line-height-1">
-                                            <h5 class="h6 g-font-weight-600">Last Month</h5>
+                                            <h5 class="h6 g-font-weight-600">{{ 'profile.lastmonth'|trans({},'messages') }}</h5>
                                             <div class="js-counter g-font-size-16" data-comma-separated="true">{{ lastMonth.totalPower }}</div>
                                         </div>
                                     </div>
@@ -315,7 +315,7 @@
                                   <i class="icon-check g-font-size-25"></i>
                                 </span>
                                 <span class="media-body align-self-center">
-                                  <strong>Vous êtes connecté</strong>  Vous devez renseigner votre armée en allant sur "Votre Armée"
+                                  <strong>{{ 'profile.connection_success'|trans({},'messages') }}</strong>  {{ 'profile.army_not_found'|trans({},'messages') }}
                                 </span>
                             </div>
                         </div>

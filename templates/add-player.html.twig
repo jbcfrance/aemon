@@ -14,7 +14,7 @@
         <div class="card border-0">
           <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
             <h3 class="h6 mb-0">
-                <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> Saisir votre armée
+                <i class="icon-directions g-pos-rel g-top-1 g-mr-5"></i> {{ 'army.title'|trans({},'messages') }}
               </h3>
           </div>
           {% if flash is not null %}
@@ -36,20 +36,20 @@
             <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{ path('calcule') }}" method="post">
               <input type="hidden" name="origin" value="add_player" />
               <div class="form-group g-mb-20">
-                <label class="g-mb-10" for="inputGroup1_1">Votre pseudo</label>
-                <input id="inputGroup1_1" name="player" required class="form-control form-control-md rounded-0 required" type="text" placeholder="Entrez votre nom">
-                <small class="form-text text-muted g-font-size-default g-mt-10">Le nom est purement indicatif pour le moment.</small>
+                <label class="g-mb-10" for="inputGroup1_1">{{ 'army.pseudo'|trans({},'messages') }}</label>
+                <input id="inputGroup1_1" name="player" required class="form-control form-control-md rounded-0 required" type="text" placeholder="{{ 'army.pseudo.placeholder'|trans({},'messages') }}">
+                <small class="form-text text-muted g-font-size-default g-mt-10">{{ 'army.pseudo.help'|trans({},'messages') }}</small>
               </div>
               <div class="table-responsive">
                 <table class="table table-striped ">
-                  <caption>Saisissez vos quantité d'unité en fonction du level et du type</caption>
+                  <caption>{{ 'army.caption'|trans({},'messages') }}</caption>
                   <thead>
                   <tr>
-                    <th class="g-font-size-18">Level</th>
+                    <th class="g-font-size-18">{{ 'army.level'|trans({},'messages') }}</th>
                   {% for type in unitTypes %}
                     <th class="text-center g-font-size-18 ">{{ type }}</th>
                   {% endfor%}
-                    <th class="g-font-size-18">Level</th>
+                    <th class="g-font-size-18">{{ 'army.level'|trans({},'messages') }}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -67,8 +67,8 @@
                   </tbody>
               </table>
               </div>
-              <input type="submit" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Calculer"/>
-              <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="Remettre à zéro"/>
+              <input type="submit" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="{{ 'army.submit'|trans({},'messages') }}"/>
+              <input type="reset" class="btn btn-md u-btn-3d u-btn-darkred g-mr-10 g-mb-15" value="{{ 'army.reset'|trans({},'messages') }}"/>
             </form>
           </div>
         </div>
