@@ -17,4 +17,14 @@
   "group": "stable",
   "dist": "trusty",
   "os": "linux"
+  addons:
+    sonarcloud:
+      organization: "jbcfrance-github"
+      token:
+        secure: 0693b823eae0724a33c50191fad6630617433e9c
+      branches:
+        - master
+        - v2
+  script:
+    - sonar-scanner
 }
