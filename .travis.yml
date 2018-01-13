@@ -1,35 +1,22 @@
-{
-  language: "php",
-  sudo: false,
-  php: 7.1.3,
-  before_script: [
-    "curl -s http://getcomposer.org/installer | php",
-    "php composer.phar install --dev --no-interaction"
-  ],
-  script: [
-    "mkdir -p build/logs",
-    "phpunit --coverage-text --coverage-clover build/logs/clover.xml"
-  ],
-  after_script: [
-    "wget https://scrutinizer-ci.com/ocular.phar",
-    "php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml"
-  ],
-  group: "stable",
-  dist: "trusty",
-  os: "linux",
-  addons: {
-    sonarcloud: {
-      organization: "jbcfrance-github",
-      token: {
-        secure: 9ebb1be2edb3527cd2948e87f784ad4a0def51d8,
-      },
-      branches:[
-        "master",
-        "v2"
-      ]
-    }
-  },
-  script: [
-    "sonar-scanner"
-  ]
-}
+language: php
+sudo: false
+php: 7.1.3
+before_script:
+- curl -s http://getcomposer.org/installer | php
+- php composer.phar install --dev --no-interaction
+script:
+- sonar-scanner
+after_script:
+- wget https://scrutinizer-ci.com/ocular.phar
+- php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+group: stable
+dist: trusty
+os: linux
+addons:
+  sonarcloud:
+    organization: jbcfrance-github
+    token:
+          secure: jVhNEfxVkf2F049mg0Hk7qIlksUgEff+9tpkA8wn24b893yQYQCwhZr2KeqkVXfeQ8fMVClVCS/er+6RS6xqeRS15a+/45N87pnw/51PSc/OMR3nY0t0JpL/0/1WuyMcEfCM7o9lFHjlUSrdV1Jg82HsaEtpfXeDlnDNoK3zDBZECEX9MC1oYKPcesVyQHX7bnBcyORd93fGkDoM8PR0D9Mm8AMVNnauizY2mE9HWkKyMCZHTvAie0NG1Myw1pka+f3J10E1kcj6Z9TV8eWp/OPtLOTVhDn0oab7ix5OYJe160nH9Lm8KQbF1VshGoJNy04h8fa57oA1i23ZSDQI3TzXc/3MVVQuHYUSw2i5hb1IzT5imcVQTe7OMEzIuiB/9VfHFM8kMaj2Bl2kKwhINeYErmwGznJEvHlRCss/noEMwCpT7xswOo8Dnxf3YNYpgMoIpNDU7fUoe5FIbta+Q+sVVXpTnUZl9divBnZK4E88uIJkjygMOTK8s/6s69eR0s0gtD4Ik99yqqDDvELMh26sVetJjYGHg+h4ae4yjZIEYOVXH0dht4nhtOog/GNkzWICrIOzQ3lSTyZE2vAYA4cbfaT1um858aeblca82ZlxK6pgeoj6drodKQHFC1bU16WlWrba39HQLuT7VCgEkAGDfUgR9DiET9V8pudTbuw=
+    branches:
+    - master
+    - v2
