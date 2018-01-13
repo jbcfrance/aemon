@@ -1,30 +1,36 @@
 {
-  "language": "php",
-  "sudo": false,
-  "php": 7.1.3,
-  "before_script": [
+  language: "php",
+  sudo: false,
+  php: 7.1.3,
+  before_script: [
     "curl -s http://getcomposer.org/installer | php",
     "php composer.phar install --dev --no-interaction"
   ],
-  "script": [
+  script: [
     "mkdir -p build/logs",
     "phpunit --coverage-text --coverage-clover build/logs/clover.xml"
   ],
-  "after_script": [
+  after_script: [
     "wget https://scrutinizer-ci.com/ocular.phar",
     "php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml"
   ],
-  "group": "stable",
-  "dist": "trusty",
-  "os": "linux"
-  addons:
-    sonarcloud:
-      organization: "jbcfrance-github"
-      token:
-        secure: 0693b823eae0724a33c50191fad6630617433e9c
-      branches:
-        - master
-        - v2
-  script:
-    - sonar-scanner
+  group: "stable",
+  dist: "trusty",
+  os: "linux",
+  addons:{
+    sonarcloud: {
+      organization: "jbcfrance-github",
+      token:{
+        secure: 9ebb1be2edb3527cd2948e87f784ad4a0def51d8,
+      }
+      branches:[
+        "master",
+        "v2"
+      ]
+    }
+
+  },
+  script: [
+    "sonar-scanner"
+  ]
 }
